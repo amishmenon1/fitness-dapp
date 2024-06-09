@@ -1,7 +1,11 @@
 // import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { walletConnect } from "wagmi/connectors";
 import { createConfig, http } from "wagmi";
-import { bsc, bscTestnet, mainnet, sepolia } from "wagmi/chains";
+import {
+  // bsc, bscTestnet,
+  mainnet,
+  sepolia,
+} from "wagmi/chains";
 
 declare module "wagmi" {
   interface Register {
@@ -18,12 +22,16 @@ if (!projectId) {
 }
 // 2. Create wagmiConfig
 export const wagmiConfig = createConfig({
-  chains: [bsc, bscTestnet, sepolia, mainnet],
+  chains: [
+    // bsc, bscTestnet,
+    sepolia,
+    mainnet,
+  ],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
-    [bsc.id]: http(),
-    [bscTestnet.id]: http(),
+    // [bsc.id]: http(),
+    // [bscTestnet.id]: http(),
   },
   connectors: [
     walletConnect({

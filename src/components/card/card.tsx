@@ -8,7 +8,7 @@ type CardProps = {
   onBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Card = ({
+export const Card = ({
   image,
   Button,
   CardDescription,
@@ -49,5 +49,3 @@ const Card = ({
     </>
   );
 };
-
-export default Card;

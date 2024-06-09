@@ -1,9 +1,9 @@
-import ConnectButton from "./connect-button";
-import NavBar from "./navbar";
-import Card from "./card/card";
+import ConnectButton from "./connect-wallet";
+import Card from "./card";
+// import Account from "./account";
 
 export default {
   ConnectButton,
-  NavBar,
   Card,
+  // Account,
 };

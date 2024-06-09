@@ -1,4 +1,4 @@
-export const VotingData = [
+export const VOTING_ABI = [
   {
     inputs: [],
     stateMutability: "nonpayable",

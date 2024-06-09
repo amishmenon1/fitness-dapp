@@ -1,6 +1,6 @@
-import VotingSection from "@/sections/voting";
-
 // type Props = {}
+
+import VotingSection from "@/sections/voting/voting-section";
 
 export const LandingPage = () => {
   return (
