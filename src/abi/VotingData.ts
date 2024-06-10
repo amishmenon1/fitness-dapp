@@ -1,4 +1,6 @@
-export const VotingData = [
+import { Abi } from "viem";
+
+export const VOTING_ABI: readonly unknown[] | Abi = [
   {
     inputs: [],
     stateMutability: "nonpayable",

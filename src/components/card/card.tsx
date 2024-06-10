@@ -5,15 +5,20 @@ type CardProps = {
   CardTitle?: string;
   titleHref?: string;
   btnHref?: string;
+  btnText: string;
+  btnValue: string;
+  disabled?: boolean;
   onBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Card = ({
+export const Card = ({
   image,
-  Button,
+  btnText,
+  btnValue,
   CardDescription,
   CardTitle,
   titleHref,
+  disabled = false,
   // btnHref,
   onBtnClick,
 }: CardProps) => {
@@ -35,12 +40,14 @@ const Card = ({
             {CardDescription}
           </p>
 
-          {Button && (
+          {btnText && (
             <button
+              value={btnValue}
               onClick={onBtnClick}
               className=" inline-block rounded-full border border-gray-3 px-7 text-base font-medium text-body-color transition hover:border-primary hover:bg-gray-600 bg-slate-800 hover:text-white dark:border-dark-3 dark:text-dark-6"
+              disabled={disabled}
             >
-              {Button}
+              {btnText}
             </button>
           )}
         </div>
@@ -49,38 +56,3 @@ const Card = ({
     </>
   );
 };
-
-// const Card = () => {
-//   return (
-//     <>
-//       <section className="bg-gray-2 pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
-//         <div className="container">
-//           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-// <SingleCard
-//   image="https://i.ibb.co/r2zns1m/image-01.jpg"
-//   CardTitle="50+ Best creative website themes & templates"
-//   titleHref="/#"
-//   btnHref="/#"
-//   CardDescription="Lorem ipsum dolor sit amet pretium consectetur adipiscing elit. Lorem consectetur adipiscing elit."
-//   Button="View Details"
-// />
-//             <SingleCard
-//               image="https://i.ibb.co/0nbbWM9/image-02-1.jpg"
-//               CardTitle="Creative Card Component designs graphic elements"
-//               CardDescription="Lorem ipsum dolor sit amet pretium consectetur adipiscing elit. Lorem consectetur adipiscing elit."
-//               Button="View Details"
-//             />
-// <SingleCard
-//   image="https://i.ibb.co/dL9fH7N/image-03-1.jpg"
-//   CardTitle="The ultimate UX and UI guide to card design"
-//   CardDescription="Lorem ipsum dolor sit amet pretium consectetur adipiscing elit. Lorem consectetur adipiscing elit."
-//   Button="View Details"
-// />
-//           </div>
-//         </div>
-//       </section>
-//     </>
-//   );
-// };
-
-export default Card;
