@@ -5,15 +5,20 @@ type CardProps = {
   CardTitle?: string;
   titleHref?: string;
   btnHref?: string;
+  btnText: string;
+  btnValue: string;
+  disabled?: boolean;
   onBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const Card = ({
   image,
-  Button,
+  btnText,
+  btnValue,
   CardDescription,
   CardTitle,
   titleHref,
+  disabled = false,
   // btnHref,
   onBtnClick,
 }: CardProps) => {
@@ -35,12 +40,14 @@ export const Card = ({
             {CardDescription}
           </p>
 
-          {Button && (
+          {btnText && (
             <button
+              value={btnValue}
               onClick={onBtnClick}
               className=" inline-block rounded-full border border-gray-3 px-7 text-base font-medium text-body-color transition hover:border-primary hover:bg-gray-600 bg-slate-800 hover:text-white dark:border-dark-3 dark:text-dark-6"
+              disabled={disabled}
             >
-              {Button}
+              {btnText}
             </button>
           )}
         </div>
