@@ -38,19 +38,16 @@ const NavBar = () => {
     >
       {({ open }) => (
         <>
-          <div
-            id="nav-container1"
-            className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8"
-          >
+          <div id="nav-container1" className="mx-auto max-w-7xl">
             <div
               id="nav-container2"
               className="relative flex h-16 items-center justify-between"
             >
+              {/* Mobile menu button*/}
               <div
                 id="nav-container3"
                 className="absolute inset-y-0 left-0 flex items-center sm:hidden"
               >
-                {/* Mobile menu button*/}
                 <DisclosureButton
                   id="nav-disclosure2"
                   className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -82,13 +79,13 @@ const NavBar = () => {
                         href={item.href}
                         onClick={() => setCurrent(item)}
                         className={classNames(
-                          current.name == item.name
+                          current?.name == item.name
                             ? "font-bold text-white"
                             : "text-gray-300  hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={
-                          current.name == item.name ? "page" : undefined
+                          current?.name == item.name ? "page" : undefined
                         }
                       >
                         {item.name}
@@ -181,12 +178,12 @@ const NavBar = () => {
                   href={item.href}
                   onClick={() => setCurrent(item)}
                   className={classNames(
-                    current.name == item.name
+                    current?.name == item.name
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={current.name == item.name ? "page" : undefined}
+                  aria-current={current?.name == item.name ? "page" : undefined}
                 >
                   {item.name}
                 </DisclosureButton>
