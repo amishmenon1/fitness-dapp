@@ -15,7 +15,7 @@ export const Account = () => {
       {/* {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
       {address && <div>{ensName ? `${ensName} (${address})` : address}</div>} */}
       <button
-        className=" px-[16px] py-2 bg-[#5673FE] rounded-[28px]"
+        className=" px-4 py-2 bg-[#5673FE] rounded-xl hover:text-white hover:bg-gray-800 transition ease-out duration-300"
         onClick={() => disconnect()}
       >
         Disconnect
