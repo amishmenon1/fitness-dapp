@@ -14,7 +14,7 @@ import { FitnessCard, cards } from "@/data/cards";
 const VotingSection = () => {
   const { isConnected } = useAccount();
   const { dispatch } = useContext(TransactionContext);
-  const [statusMessage, setStatusMessage] = useState<string>();
+  const [_, setStatusMessage] = useState<string>();
   const {
     data: hash,
     writeContract,

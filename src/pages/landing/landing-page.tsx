@@ -2,7 +2,6 @@
 
 import TransactionContextProvider from "@/contexts/vote-transaction-context";
 import ScoreboardSection from "@/sections/scoreboard/scoreboard-section";
-import StatusSection from "@/sections/status/status-section";
 import VotingSection from "@/sections/voting/voting-section";
 
 export const LandingPage = () => {
