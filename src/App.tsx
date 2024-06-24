@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className=" h-screen bg-dumbbellBg bg-cover xs:px-10 sm:px-20 md:px-40">
+    <div className=" pb-16 h-screen bg-dumbbellBg bg-cover xs:px-10 sm:px-20 md:px-40">
       <NavBar />
       <Router>
         <Routes>

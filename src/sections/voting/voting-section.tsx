@@ -43,10 +43,16 @@ const VotingSection = () => {
     });
   }, [isConfirming, isConfirmed, hash, dispatch]);
 
-  if (writeError) {
-    console.error("write error: ", writeError);
-    console.error("is error: ", isError);
-  }
+  useEffect(() => {
+    console.log("writeError: ", writeError);
+    console.log("isError: ", isError);
+
+    // dispatch({
+    //   type: ACTIONS.UPDATE_ERROR_STATUS,
+    //   payload: { isConfirming, isConfirmed, hash },
+    // });
+  }, [writeError, isError, dispatch]);
+
   /**
    * Places a vote.
    * @param event The button click event.
@@ -82,15 +88,16 @@ const VotingSection = () => {
 
   return (
     <section id="voting-card-container" className=" flex flex-col gap-8">
-      <div className="flex flex-col gap-8">
-        <div className="bg-black bg-opacity-50">
+      <div className="flex flex-col">
+        {/* <div className="bg-black bg-opacity-50">
           <p className="flex justify-center text-white text-lg">
             {statusMessage}
           </p>
-        </div>
+        </div> */}
         <div className="flex justify-between">
           {cards.map((card: FitnessCard) => (
             <Card
+              key={card.cardTitle}
               image={card.image}
               CardTitle={card.cardTitle}
               titleHref={card.titleHref}
