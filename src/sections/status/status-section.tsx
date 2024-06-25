@@ -2,9 +2,9 @@ type StatusProps = {
   message?: string;
 };
 
-const StatusSection = ({ message = "" }: StatusProps) => {
+const StatusSection = ({ message = "Status" }: StatusProps) => {
   return (
-    <div className="text-white text-sm w-full  bg-black bg-opacity-50">
+    <div className="text-white text-sm w-full bg-neutral-900 py-2 ">
       {message}
     </div>
   );

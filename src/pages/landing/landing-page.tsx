@@ -2,6 +2,7 @@
 
 import TransactionContextProvider from "@/contexts/vote-transaction-context";
 import ScoreboardSection from "@/sections/scoreboard/scoreboard-section";
+import StatusSection from "@/sections/status/status-section";
 import VotingSection from "@/sections/voting/voting-section";
 
 export const LandingPage = () => {
@@ -11,8 +12,8 @@ export const LandingPage = () => {
       className="justify-center bg-opacity-100 flex flex-col gap-4 p-4"
     >
       <TransactionContextProvider>
+        <StatusSection />
         <VotingSection />
-        {/* <StatusSection /> */}
         <ScoreboardSection />
       </TransactionContextProvider>
     </div>
