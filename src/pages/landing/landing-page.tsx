@@ -6,9 +6,13 @@ import VotingSection from "@/sections/voting/voting-section";
 
 export const LandingPage = () => {
   return (
-    <div id="landing-page" className="flex flex-col gap-4 p-4">
+    <div
+      id="landing-page"
+      className="justify-center bg-opacity-100 flex flex-col gap-4 p-4"
+    >
       <TransactionContextProvider>
         <VotingSection />
+        {/* <StatusSection /> */}
         <ScoreboardSection />
       </TransactionContextProvider>
     </div>

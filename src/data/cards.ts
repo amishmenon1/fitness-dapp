@@ -22,5 +22,6 @@ export const cards: FitnessCard[] = [
     cardTitle: "Cardio",
     titleHref: "/#",
     btnValue: "Cardio",
+    gradiantDirection: "r",
   },
 ];

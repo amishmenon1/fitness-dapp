@@ -37,17 +37,17 @@ const ScoreboardSection = () => {
             Score
           </h2>
           {isConfirming || isPending ? (
-            <div className="text-black xs:text-xl sm:text-2xl text-lg flex flex-col items-center justify-center p-8 space-y-4">
+            <div className="text-black xs:text-xl  text-lg flex flex-col items-center justify-center p-8 space-y-4">
               Updating Votes...
             </div>
           ) : (
-            <div className="xs:text-xl sm:text-2xl text-lg flex flex-col items-center justify-center p-8 space-y-4">
-              <div className="bg-white w-full py-4 rounded-md text-center shadow-md">
+            <div className="xs:text-xl sm:text-2xl  flex flex-col items-center justify-center p-8 space-y-4">
+              <div className="bg-white w-full p-2 rounded-md text-center shadow-md">
                 <h5 className=" text-gray-800 font-light">
                   Cardio: {cardioVotes?.result?.toString()}
                 </h5>
               </div>
-              <div className="bg-white w-full py-4 rounded-md text-center shadow-md">
+              <div className="bg-white w-full p-2 rounded-md text-center shadow-md">
                 <h5 className=" text-gray-800 font-light">
                   Weightlifting: {weightliftingVotes?.result?.toString()}
                 </h5>

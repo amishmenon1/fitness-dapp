@@ -1,9 +1,13 @@
 type StatusProps = {
-  message: string;
+  message?: string;
 };
 
-const StatusSection = ({ message }: StatusProps) => {
-  return <div className="text-white text-lg">{message}</div>;
+const StatusSection = ({ message = "" }: StatusProps) => {
+  return (
+    <div className="text-white text-sm w-full  bg-black bg-opacity-50">
+      {message}
+    </div>
+  );
 };
 
 export default StatusSection;
