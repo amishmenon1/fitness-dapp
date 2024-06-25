@@ -7,6 +7,11 @@ import MobileMenu from "./mobile-menu";
 import DesktopMenu from "./desktop-menu";
 import MobileMenuButton from "./mobile-menu-button";
 
+export type NavItemType = {
+  name: string;
+  href: string;
+};
+
 const navigation: NavItemType[] = [
   { name: "Dashboard", href: "#" },
   // { name: "About Me", href: "#" },
@@ -17,11 +22,6 @@ const navigation: NavItemType[] = [
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-
-export type NavItemType = {
-  name: string;
-  href: string;
-};
 
 const NavBar = () => {
   const [current, setCurrent] = useState<NavItemType>(
@@ -35,11 +35,11 @@ const NavBar = () => {
     <Disclosure
       id="nav-disclosure1"
       as="nav"
-      className="bg-gray-800 bg-opacity-0 "
+      className="bg-gray-800 bg-opacity-50 fixed w-full "
     >
       {({ open }) => (
         <>
-          <div id="nav-container1" className="mx-auto max-w-7xl">
+          <div id="nav-container1" className="xs:px-10 sm:px-20">
             <div
               id="nav-container2"
               className="relative flex h-16 items-center justify-between"
@@ -86,6 +86,8 @@ const NavBar = () => {
             onClick={onNavItemClick}
             current={current}
           />
+
+          {/* <MobileSidebar className=" min-w-48" /> */}
         </>
       )}
     </Disclosure>

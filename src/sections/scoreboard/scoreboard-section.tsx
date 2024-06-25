@@ -41,7 +41,7 @@ const ScoreboardSection = () => {
               Updating Votes...
             </div>
           ) : (
-            <div className="xs:text-xl sm:text-2xl text-lg flex flex-col items-center justify-center p-8 space-y-4">
+            <div className="xs:text-xl sm:text-2xl  flex flex-col items-center justify-center p-8 space-y-4">
               <div className="bg-white w-full p-2 rounded-md text-center shadow-md">
                 <h5 className=" text-gray-800 font-light">
                   Cardio: {cardioVotes?.result?.toString()}

@@ -8,7 +8,7 @@ export const LandingPage = () => {
   return (
     <div
       id="landing-page"
-      className="h-full justify-center bg-opacity-100 flex flex-col gap-4 p-4"
+      className="justify-center bg-opacity-100 flex flex-col gap-4 p-4"
     >
       <TransactionContextProvider>
         <VotingSection />

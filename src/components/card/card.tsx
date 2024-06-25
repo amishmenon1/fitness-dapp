@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 type CardProps = {
   image?: string;
   Button?: string;
@@ -24,10 +26,13 @@ export const Card = ({
 }: CardProps) => {
   return (
     <>
-      <div className="w-full md:w-4/12 ">
+      <div className="w-full md:w-4/12 min-w-44">
         <div className="p-2">
           <div
-            className={`rounded-lg bg-gradient-to-${gradiantDirection} from-black to-gray-400 `}
+            className={classNames(
+              `bg-gradient-to-${gradiantDirection}`,
+              "rounded-lg from-black to-gray-400 "
+            )}
           >
             <div className="flex items-center justify-center">
               <img

@@ -94,7 +94,7 @@ const VotingSection = () => {
             {statusMessage}
           </p>
         </div> */}
-        <div className="flex justify-between">
+        <div className="flex-col xs:flex-row flex justify-between overflow-y-scroll">
           {cards.map((card: FitnessCard) => (
             <Card
               key={card.cardTitle}

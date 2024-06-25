@@ -1,16 +1,21 @@
 import "./App.css";
+import AuthLayout from "./layouts/auth-layout";
+import MainLayout from "./layouts/main-layout";
 
 import LandingPage from "./pages/landing";
-import NavBar from "./sections/navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className=" pb-16 h-screen bg-dumbbellBg bg-cover xs:px-10 sm:px-20 md:px-40">
-      <NavBar />
+    <div className={`bg-dumbbellBg bg-cover`}>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<AuthLayout />}>
+            {/* <Route index element={<ConnectWalletPage />} /> */}
+          </Route>
+          <Route path="/" element={<MainLayout className="" />}>
+            <Route index element={<LandingPage />} />
+          </Route>
         </Routes>
       </Router>
     </div>
