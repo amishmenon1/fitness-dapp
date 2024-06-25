@@ -20,7 +20,7 @@ const VotingSection = () => {
     writeContract,
     error: writeError,
     isError,
-    // status, // 'idle' | 'pending' | 'error' | 'success'
+    status, // 'idle' | 'pending' | 'error' | 'success'
   } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -30,27 +30,31 @@ const VotingSection = () => {
 
   useEffect(() => {
     if (!dispatch) throw new Error("No dispatch function found.");
+    if (!status) return;
     if (!isConfirmed && !isConfirming) return;
     if (isConfirming) setStatusMessage("Confirming transaction...");
     if (isConfirmed) setStatusMessage("Transaction confirmed!");
+
     console.log("isConfirming: ", isConfirming);
     console.log("isConfirmed: ", isConfirmed);
     console.log("hash: ", hash);
+    console.log("status: ", status);
 
     dispatch({
       type: ACTIONS.UPDATE_VOTING_STATUS,
       payload: { isConfirming, isConfirmed, hash },
     });
-  }, [isConfirming, isConfirmed, hash, dispatch]);
+  }, [isConfirming, isConfirmed, hash, status, dispatch]);
 
   useEffect(() => {
+    if (!dispatch) throw new Error("No dispatch function found.");
     console.log("writeError: ", writeError);
     console.log("isError: ", isError);
 
-    // dispatch({
-    //   type: ACTIONS.UPDATE_ERROR_STATUS,
-    //   payload: { isConfirming, isConfirmed, hash },
-    // });
+    dispatch({
+      type: ACTIONS.UPDATE_ERROR_STATUS,
+      payload: { isConfirming, isConfirmed, hash },
+    });
   }, [writeError, isError, dispatch]);
 
   /**
@@ -58,6 +62,11 @@ const VotingSection = () => {
    * @param event The button click event.
    */
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    // dispatch({
+    //   type: ACTIONS.UPDATE_VOTING_STATUS,
+    //   payload: { isConfirming, isConfirmed, hash },
+    // });
+
     const isWeightlifting = event.currentTarget.value === "Weightlifting";
     const functionName = isWeightlifting ? "voteWeightlifting" : "voteCardio";
     try {
@@ -71,13 +80,16 @@ const VotingSection = () => {
         },
         {
           onSuccess: async (_response) => {
+            console.log("Successfully voted! Write contract status: ", status);
             setStatusMessage("Successfully voted! Confirming transaction...");
           },
           onSettled: (response) => {
             console.log("Settled. Response: ", response);
+            console.log("Settled. Write contract status: ", status);
           },
           onError: (error) => {
             console.error("Error voting: ", error);
+            console.log("Error. Write contract status: ", status);
           },
         }
       );
@@ -85,6 +97,14 @@ const VotingSection = () => {
       console.error(e);
     }
   }
+
+  // const voteButtonText = () => {
+  //   let text = "";
+  //   if (!isConnected) return "Connect Wallet to Vote!";
+  //   if (isConfirming || status === "pending") text = "Voting...";
+  //   if (isConfirmed || status === "idle") text = "Vote!";
+  //   return "Vote!";
+  // };
 
   return (
     <section id="voting-card-container" className=" flex flex-col gap-8">
@@ -102,10 +122,10 @@ const VotingSection = () => {
               CardTitle={card.cardTitle}
               titleHref={card.titleHref}
               onBtnClick={handleClick}
-              // CardDescription="Lorem ipsum dolor sit amet pretium consectetur adipiscing elit. Lorem consectetur adipiscing elit."
               btnText={isConfirming ? "Voting..." : "Vote!"}
+              // btnText={voteButtonText()}
               btnValue={card.btnValue}
-              disabled={isConfirming || !isConnected}
+              disabled={isConfirming || status === "pending" || !isConnected}
               gradiantDirection={card.gradiantDirection}
             />
           ))}

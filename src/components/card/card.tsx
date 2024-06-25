@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useAccount } from "wagmi";
 
 type CardProps = {
   image?: string;
@@ -24,13 +25,16 @@ export const Card = ({
   onBtnClick,
   gradiantDirection = "r",
 }: CardProps) => {
+  const { isConnected } = useAccount();
   return (
     <>
       <div className="w-full md:w-4/12 min-w-44">
-        <div className="p-2">
+        <div className="p-4">
           <div
             className={classNames(
-              `bg-gradient-to-${gradiantDirection}`,
+              gradiantDirection === "r"
+                ? `bg-gradient-to-r`
+                : `bg-gradient-to-l`,
               "rounded-lg from-black to-gray-400 "
             )}
           >
@@ -51,14 +55,25 @@ export const Card = ({
               </p>
 
               {btnText && (
-                <button
-                  value={btnValue}
-                  onClick={onBtnClick}
-                  className=" rounded-full border border-gray-3 text-body-color transition hover:border-primary hover:bg-gray-600 bg-slate-800 hover:text-white dark:border-dark-3 dark:text-dark-6"
-                  disabled={disabled}
-                >
-                  {btnText}
-                </button>
+                <div className={!isConnected ? `has-tooltip` : ""}>
+                  <span
+                    className={
+                      disabled
+                        ? `tooltip rounded shadow-lg p-1 bg-gray-100 text-neutral-600 -mt-10`
+                        : "hidden"
+                    }
+                  >
+                    Connect Wallet to Vote!
+                  </span>
+                  <button
+                    value={btnValue}
+                    onClick={onBtnClick}
+                    className="px-10 rounded-full border border-gray-3 text-body-color transition hover:border-primary hover:bg-gray-600 bg-slate-800 hover:text-white dark:border-dark-3 dark:text-dark-6"
+                    disabled={disabled}
+                  >
+                    {btnText}
+                  </button>
+                </div>
               )}
             </div>
           </div>
