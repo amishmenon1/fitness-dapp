@@ -1,71 +1,25 @@
 import Card from "@/components/card";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useAccount } from "wagmi";
 import { VOTING_ABI as abi } from "@/abi/VotingData";
 import { sepolia } from "viem/chains";
-import { useContext, useEffect, useState } from "react";
-import { ACTIONS } from "@/actions/voting-actions";
-import { TransactionContext } from "@/contexts/vote-transaction-context";
+import { useContext } from "react";
 import { FitnessCard, cards } from "@/data/cards";
+import { ContractContext } from "@/contexts/contract-context";
 
 const VotingSection = () => {
   const { isConnected } = useAccount();
-  const { dispatch } = useContext(TransactionContext);
-  const [_, setStatusMessage] = useState<string>();
+  const { contractState, setContractState, writeContract } =
+    useContext(ContractContext);
   const {
-    data: hash,
-    writeContract,
-    error: writeError,
-    isError,
-    status, // 'idle' | 'pending' | 'error' | 'success'
-  } = useWriteContract();
-
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
-
-  useEffect(() => {
-    if (!dispatch) throw new Error("No dispatch function found.");
-    if (!status) return;
-    if (!isConfirmed && !isConfirming) return;
-    if (isConfirming) setStatusMessage("Confirming transaction...");
-    if (isConfirmed) setStatusMessage("Transaction confirmed!");
-
-    console.log("isConfirming: ", isConfirming);
-    console.log("isConfirmed: ", isConfirmed);
-    console.log("hash: ", hash);
-    console.log("status: ", status);
-
-    dispatch({
-      type: ACTIONS.UPDATE_VOTING_STATUS,
-      payload: { isConfirming, isConfirmed, hash },
-    });
-  }, [isConfirming, isConfirmed, hash, status, dispatch]);
-
-  useEffect(() => {
-    if (!dispatch) throw new Error("No dispatch function found.");
-    console.log("writeError: ", writeError);
-    console.log("isError: ", isError);
-
-    dispatch({
-      type: ACTIONS.UPDATE_ERROR_STATUS,
-      payload: { isConfirming, isConfirmed, hash },
-    });
-  }, [writeError, isError, dispatch]);
+    writeStatus, // 'idle' | 'pending' | 'error' | 'success'
+  } = contractState;
 
   /**
    * Places a vote.
    * @param event The button click event.
    */
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-    // dispatch({
-    //   type: ACTIONS.UPDATE_VOTING_STATUS,
-    //   payload: { isConfirming, isConfirmed, hash },
-    // });
+    setContractState({ ...contractState, writeStatus: "started" });
 
     const isWeightlifting = event.currentTarget.value === "Weightlifting";
     const functionName = isWeightlifting ? "voteWeightlifting" : "voteCardio";
@@ -79,17 +33,23 @@ const VotingSection = () => {
           chainId: sepolia.id,
         },
         {
-          onSuccess: async (_response) => {
-            console.log("Successfully voted! Write contract status: ", status);
-            setStatusMessage("Successfully voted! Confirming transaction...");
+          onSuccess: (response: any) => {
+            console.log("Write success: ", response);
+            setContractState({ ...contractState, writeStatus });
           },
-          onSettled: (response) => {
+          onSettled: async (response: any) => {
             console.log("Settled. Response: ", response);
-            console.log("Settled. Write contract status: ", status);
+            console.log("Refetching transaction...");
+
+            setContractState({ ...contractState, writeStatus });
           },
-          onError: (error) => {
-            console.error("Error voting: ", error);
-            console.log("Error. Write contract status: ", status);
+          onError: (error: any) => {
+            console.log("Error writing contract: ", error);
+            setContractState({
+              ...contractState,
+              writeStatus: "error",
+              writeErrorMsg: error?.message,
+            });
           },
         }
       );
@@ -98,23 +58,10 @@ const VotingSection = () => {
     }
   }
 
-  // const voteButtonText = () => {
-  //   let text = "";
-  //   if (!isConnected) return "Connect Wallet to Vote!";
-  //   if (isConfirming || status === "pending") text = "Voting...";
-  //   if (isConfirmed || status === "idle") text = "Vote!";
-  //   return "Vote!";
-  // };
-
   return (
     <section id="voting-card-container" className=" flex flex-col gap-8">
       <div className="flex flex-col">
-        {/* <div className="bg-black bg-opacity-50">
-          <p className="flex justify-center text-white text-lg">
-            {statusMessage}
-          </p>
-        </div> */}
-        <div className="flex-col xs:flex-row flex justify-between overflow-y-scroll">
+        <div className="relative flex-col xs:flex-row flex justify-between overflow-y-scroll gap-4 px-4 xs:px-0">
           {cards.map((card: FitnessCard) => (
             <Card
               key={card.cardTitle}
@@ -122,10 +69,16 @@ const VotingSection = () => {
               CardTitle={card.cardTitle}
               titleHref={card.titleHref}
               onBtnClick={handleClick}
-              btnText={isConfirming ? "Voting..." : "Vote!"}
+              btnText={
+                ["pending", "started"].includes(writeStatus)
+                  ? "Voting..."
+                  : "Vote!"
+              }
               // btnText={voteButtonText()}
               btnValue={card.btnValue}
-              disabled={isConfirming || status === "pending" || !isConnected}
+              disabled={
+                ["pending", "started"].includes(writeStatus) || !isConnected
+              }
               gradiantDirection={card.gradiantDirection}
             />
           ))}

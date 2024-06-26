@@ -68,7 +68,7 @@ export const Card = ({
                   <button
                     value={btnValue}
                     onClick={onBtnClick}
-                    className="px-10 rounded-full border border-gray-3 text-body-color transition hover:border-primary hover:bg-gray-600 bg-slate-800 hover:text-white dark:border-dark-3 dark:text-dark-6"
+                    className=" font-bold bg-gradient-to-l from-blue-gray-800 to-gray-400 px-10 rounded-full border border-gray-3 text-body-color transition hover:border-primary hover:text-white"
                     disabled={disabled}
                   >
                     {btnText}

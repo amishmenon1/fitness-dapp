@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className={`bg-dumbbellBg bg-cover`}>
+    <div className={`bg-dumbbellBg bg-cover `}>
       <Router>
         <Routes>
           <Route path="/login" element={<AuthLayout />}>

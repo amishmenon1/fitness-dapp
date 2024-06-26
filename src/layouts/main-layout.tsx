@@ -11,10 +11,11 @@ type Props = {
 const MainLayout = ({ className }: Props) => {
   return (
     <div
-      className={cn(`py-3 flex h-screen w-screen overflow-hidden`, className)}
+      className={cn(
+        `py-3 flex h-screen w-screen overflow-hidden justify-center`,
+        className
+      )}
     >
-      {/* <h3 className="text-black">Main Layout</h3> */}
-
       <NavBar />
 
       <div className="py-16 xs:px-10 sm:px-20 md:px-40 overflow-y-scroll">
