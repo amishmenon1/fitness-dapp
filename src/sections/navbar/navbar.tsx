@@ -6,6 +6,7 @@ import ProfileDropdown from "./profile-dropdown";
 import MobileMenu from "./mobile-menu";
 import DesktopMenu from "./desktop-menu";
 import MobileMenuButton from "./mobile-menu-button";
+import { useAccount } from "wagmi";
 
 export type NavItemType = {
   name: string;
@@ -27,6 +28,7 @@ const NavBar = () => {
   const [current, setCurrent] = useState<NavItemType>(
     navigation[0] ?? { name: "", href: "" }
   );
+  const { isConnected, address } = useAccount();
   function onNavItemClick(item: NavItemType) {
     setCurrent(item);
   }
@@ -73,6 +75,11 @@ const NavBar = () => {
                 id="top-right-nav-container"
                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
               >
+                <p className=" pr-4 hidden xs:block">
+                  {isConnected
+                    ? `${address?.slice(0, 4)}...${address?.slice(-3)}`
+                    : ""}
+                </p>
                 <AuthButton />
 
                 {/* Profile dropdown */}

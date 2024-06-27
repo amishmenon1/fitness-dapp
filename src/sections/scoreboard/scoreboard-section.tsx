@@ -1,12 +1,14 @@
 import { ContractContext } from "@/contexts/contract-context";
 import { useVotingContract } from "@/hooks/useVotingContract";
 import { useContext, useEffect } from "react";
-import { BaseError } from "wagmi";
+import { BaseError, useWaitForTransactionReceipt } from "wagmi";
 
 const ScoreboardSection = () => {
   const { data, error, isPending, refetch } = useVotingContract();
-  const { contractState } = useContext(ContractContext);
-  const { writeStatus } = contractState;
+  const { hash } = useContext(ContractContext);
+  const { status: transactionStatus } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   const [cardioVotes, weightliftingVotes] = data || [];
 
@@ -19,10 +21,14 @@ const ScoreboardSection = () => {
         console.error(e);
       }
     }
-    if (writeStatus === "success") {
+    console.log(
+      "scoreboard useeffect - transaction status: ",
+      transactionStatus
+    );
+    if (transactionStatus === "success") {
       refetchVotes();
     }
-  }, [writeStatus, refetch]);
+  }, [transactionStatus, refetch]);
 
   if (error)
     return (

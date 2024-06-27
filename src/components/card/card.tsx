@@ -59,7 +59,7 @@ export const Card = ({
                   <span
                     className={
                       disabled
-                        ? `tooltip rounded shadow-lg p-1 bg-gray-100 text-neutral-600 -mt-10`
+                        ? ` text-black tooltip rounded shadow-lg p-1 bg-gray-100 text-neutral-600 -mt-10`
                         : "hidden"
                     }
                   >
@@ -68,7 +68,10 @@ export const Card = ({
                   <button
                     value={btnValue}
                     onClick={onBtnClick}
-                    className=" font-bold bg-gradient-to-l from-blue-gray-800 to-gray-400 px-10 rounded-full border border-gray-3 text-body-color transition hover:border-primary hover:text-white"
+                    className={classNames(
+                      "",
+                      "text-xs xs:text-sm font-bold bg-gradient-to-l from-blue-gray-800 to-gray-400 px-4 xs:w-1/2 xs:min-w-1/2 rounded-full text-body-color transition hover:border-primary hover:text-white"
+                    )}
                     disabled={disabled}
                   >
                     {btnText}

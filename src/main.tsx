@@ -18,6 +18,16 @@ createWeb3Modal({
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
+  themeMode: "light",
+  themeVariables: {
+    "--w3m-font-family": "Arial, sans-serif",
+    "--w3m-accent": "green", //"linear-gradient(to left, #000, #FFF)", //"#ff6347", // Tomato color
+    // '--w3m-color-mix': '#ff6347',
+    // '--w3m-color-mix-strength': '50%',
+    // '--w3m-font-size-master': '16px',
+    // '--w3m-border-radius-master': '10px',
+    // '--w3m-z-index': '1000'
+  },
 });
 
 interface Web3ModalProviderProps {

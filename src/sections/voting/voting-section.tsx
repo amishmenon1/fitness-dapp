@@ -5,6 +5,7 @@ import { sepolia } from "viem/chains";
 import { useContext } from "react";
 import { FitnessCard, cards } from "@/data/cards";
 import { ContractContext } from "@/contexts/contract-context";
+import { CONTRACT_STATUSES } from "@/data/statuses";
 
 const VotingSection = () => {
   const { isConnected } = useAccount();
@@ -13,13 +14,18 @@ const VotingSection = () => {
   const {
     writeStatus, // 'idle' | 'pending' | 'error' | 'success'
   } = contractState;
+  const { WRITE_STARTED } = CONTRACT_STATUSES;
 
   /**
    * Places a vote.
    * @param event The button click event.
    */
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-    setContractState({ ...contractState, writeStatus: "started" });
+    setContractState({
+      ...contractState,
+      writeStatus: WRITE_STARTED.message,
+      writeErrorMsg: "",
+    });
 
     const isWeightlifting = event.currentTarget.value === "Weightlifting";
     const functionName = isWeightlifting ? "voteWeightlifting" : "voteCardio";
@@ -33,18 +39,14 @@ const VotingSection = () => {
           chainId: sepolia.id,
         },
         {
-          onSuccess: (response: any) => {
-            console.log("Write success: ", response);
+          onSuccess: (_response: any) => {
             setContractState({ ...contractState, writeStatus });
           },
-          onSettled: async (response: any) => {
-            console.log("Settled. Response: ", response);
-            console.log("Refetching transaction...");
-
+          onSettled: async (_response: any) => {
             setContractState({ ...contractState, writeStatus });
           },
           onError: (error: any) => {
-            console.log("Error writing contract: ", error);
+            console.error("Error writing contract: ", error);
             setContractState({
               ...contractState,
               writeStatus: "error",
@@ -75,7 +77,7 @@ const VotingSection = () => {
                   : "Vote!"
               }
               // btnText={voteButtonText()}
-              btnValue={card.btnValue}
+              btnValue={card.value}
               disabled={
                 ["pending", "started"].includes(writeStatus) || !isConnected
               }

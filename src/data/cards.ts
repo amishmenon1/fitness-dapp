@@ -5,7 +5,7 @@ export type FitnessCard = {
   image: string;
   cardTitle: string;
   titleHref: string;
-  btnValue: string;
+  value: string;
   gradiantDirection?: string;
 };
 
@@ -14,14 +14,14 @@ export const cards: FitnessCard[] = [
     image: weightliftingGif,
     cardTitle: "Weightlifting",
     titleHref: "/#",
-    btnValue: "Weightlifting",
+    value: "Weightlifting",
     gradiantDirection: "l",
   },
   {
     image: cardioGif,
     cardTitle: "Cardio",
     titleHref: "/#",
-    btnValue: "Cardio",
+    value: "Cardio",
     gradiantDirection: "r",
   },
 ];
