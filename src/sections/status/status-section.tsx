@@ -1,22 +1,20 @@
 import { ContractContext } from "@/contexts/contract-context";
+import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
+import { useContractStatuses } from "@/hooks/useContractStatuses";
 import { Spinner } from "@material-tailwind/react";
 import classNames from "classnames";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useWaitForTransactionReceipt } from "wagmi";
 
 const StatusSection = () => {
-  const [contractStatusMessage, setContractStatusMessage] = useState<string>();
-  const [transactionStatusMessage, setTransactionStatusMessage] =
-    useState<string>();
-  const [writeErrorMessage, setWriteErrorMessage] = useState<string>();
-  const [transactionErrorMessage, setTransactionErrorMessage] =
-    useState<string>();
-  const { contractState, hash } = useContext(ContractContext);
   const {
-    writeErrorMsg,
-    writeStatus, // 'idle' | 'pending' | 'error' | 'success'
-  } = contractState;
+    contractState: { writeErrorMsg, writeStatus },
+    hash,
+  } = useContext(ContractContext);
+  const [openStatusModal, setOpenStatusModal] = useState(false);
 
+  const { WRITE_IDLE, TRANSACTION_PENDING } = CONTRACT_STATUSES;
+  const { WRITE_ERROR } = ERROR_STATUSES;
   const {
     isRefetching: transactionRefetching,
     error: transactionErrorMsg,
@@ -24,73 +22,32 @@ const StatusSection = () => {
   } = useWaitForTransactionReceipt({
     hash,
   });
-
-  // const writeInProgress = () => !["success", "idle"].includes(writeStatus);
-
-  const transactionPending = () =>
-    !["idle"].includes(writeStatus) && transactionStatus === "pending";
-
-  // const showContractSpinner = () => writeInProgress();
-  const showTransactionSpinner = () => transactionPending();
-  const showStatusModal = () => writeStatus !== "idle";
-
-  useEffect(() => {
-    let writeStatusmessage = "";
-    let transactionStatusMessage = "";
-
-    if (writeStatus === "idle") {
-      writeStatusmessage = "System idle.";
-      transactionStatusMessage = "System idle.";
-    }
-
-    if (writeStatus === "started") {
-      writeStatusmessage = "Contract write initiated.";
-      transactionStatusMessage = "Beginning write transaction...";
-    }
-
-    if (writeStatus === "pending")
-      writeStatusmessage = "Writing to contract...";
-
-    if (writeStatus === "success")
-      writeStatusmessage = "Contract write success.";
-
-    if (transactionStatus === "pending") {
-      if (!["pending", "idle"].includes(writeStatus))
-        transactionStatusMessage = "Confirming transaction...";
-      else transactionStatusMessage = "";
-    }
-
-    if (transactionStatus === "success")
-      transactionStatusMessage = "Transaction complete.";
-
-    if (transactionRefetching) transactionStatusMessage = "Refetching data...";
-
-    if (writeStatus === "error") {
-      setWriteErrorMessage(writeErrorMsg ? writeErrorMsg.message : "");
-      setTransactionErrorMessage(
-        transactionErrorMsg ? transactionErrorMsg.message : ""
-      );
-
-      setContractStatusMessage("Error");
-      setTransactionErrorMessage("");
-      return;
-    }
-
-    console.log("status-section - writeStatus: ", writeStatus);
-    setContractStatusMessage(writeStatusmessage);
-    setTransactionStatusMessage(transactionStatusMessage);
-  }, [
+  const {
+    contractStatusMessage,
+    transactionStatusMessage,
+    writeErrorMessage,
+    transactionErrorMessage,
+  } = useContractStatuses(
     writeStatus,
     transactionStatus,
     writeErrorMsg,
     transactionErrorMsg,
     transactionRefetching,
-  ]);
+    setOpenStatusModal
+  );
+
+  const transactionPending = () =>
+    ![WRITE_IDLE.name, WRITE_ERROR.name].includes(writeStatus) &&
+    transactionStatus === TRANSACTION_PENDING.name;
+
+  const showTransactionSpinner = () =>
+    transactionStatusMessage && transactionPending();
+  const notIdle = () => writeStatus !== WRITE_IDLE.name;
 
   return (
     <div
       className={classNames(
-        showStatusModal()
+        notIdle() && openStatusModal
           ? "absolute top-56 w-full left-0 h-52 bg-black bg-opacity-80 rounded-lg"
           : "hidden",
         "text-sm w-full z-50 py-2 flex flex-col items-center justify-center md:absolute md:top-36 md:left-0"
@@ -100,16 +57,6 @@ const StatusSection = () => {
         <h3 className="text-white pb-4">System Status</h3>
         <span className="flex justify-center items-center gap-4">
           <p className="text-blue-300">{contractStatusMessage}</p>
-          {/* {showContractSpinner() ? (
-            <Spinner
-              color="light-blue"
-              className=" w-4 h-4"
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            />
-          ) : (
-            <></>
-          )} */}
         </span>
 
         <span className="flex justify-center items-center gap-4">
@@ -125,6 +72,17 @@ const StatusSection = () => {
         <div className="flex flex-col justify-center items-center gap-4">
           <p className=" text-red-500">{writeErrorMessage}</p>
           <p className=" text-red-500">{transactionErrorMessage}</p>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-4">
+          <button
+            onClick={() => setOpenStatusModal(false)}
+            className={classNames(
+              "",
+              "text-xs xs:text-sm font-bold bg-gradient-to-l from-blue-gray-800 to-gray-400 px-4 xs:w-1/2 xs:min-w-1/2 rounded-full text-body-color transition hover:border-primary hover:text-white"
+            )}
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
