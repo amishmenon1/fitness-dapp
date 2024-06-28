@@ -4,6 +4,7 @@ import MainLayout from "./layouts/main-layout";
 
 import LandingPage from "./pages/landing";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Playground from "./pages/playground";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           </Route>
           <Route path="/" element={<MainLayout className="" />}>
             <Route index element={<LandingPage />} />
+            <Route path="/playground" element={<Playground />} />
           </Route>
         </Routes>
       </Router>

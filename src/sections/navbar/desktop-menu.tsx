@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NavItemType } from "./navbar";
+import { NavItemType } from "@/routes/paths";
+import { Link } from "react-router-dom";
 
 type DesktopMenuProps = {
   navigationOptions: any[];
@@ -19,20 +20,21 @@ const DesktopMenu = ({
       <div className="hidden sm:ml-6 sm:block">
         <div className="flex space-x-4">
           {navigationOptions.map((item: NavItemType) => (
-            <a
-              key={item.name}
-              href={item.href}
+            <Link
+              key={item.key}
               onClick={() => onClick(item)}
               className={classNames(
-                current?.name == item.name
-                  ? "font-bold text-white"
+                current?.key === item.key
+                  ? "text-green-400  hover:text-green-300 font-bold"
                   : "text-gray-300  hover:text-white",
-                "rounded-md px-3 py-2 text-sm font-medium"
+                "rounded-md px-3 py-2 text-sm font-medium cursor-pointer hover:cursor-pointer"
               )}
-              aria-current={current?.name == item.name ? "page" : undefined}
+              aria-current={current?.label == item.label ? "page" : undefined}
+              to={item.path}
             >
-              {item.name}
-            </a>
+              {/* <span>{item.icon}</span> */}
+              {item.label}
+            </Link>
           ))}
         </div>
       </div>

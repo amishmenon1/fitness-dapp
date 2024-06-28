@@ -47,16 +47,15 @@ export const useContractStatuses = (
         transactionStatusMsg = TRANSACTION_STARTED.message;
       }
 
-      if (writeStatus === WRITE_PENDING.name)
+      if (writeStatus === WRITE_PENDING.name) {
         writeStatusMsg = WRITE_PENDING.message;
+      }
 
       if (writeStatus === WRITE_SUCCESS.name)
         writeStatusMsg = WRITE_SUCCESS.message;
 
       if (transactionStatus === TRANSACTION_PENDING.name) {
-        const contractIsIdle = [WRITE_PENDING.name, WRITE_IDLE.name].includes(
-          writeStatus
-        );
+        const contractIsIdle = [WRITE_IDLE.name].includes(writeStatus);
         if (!contractIsIdle) transactionStatusMsg = TRANSACTION_PENDING.message;
         else transactionStatusMsg = "";
       }
@@ -90,7 +89,7 @@ export const useContractStatuses = (
       }
     }
 
-    // console.log("status-section - writeStatus: ", writeStatus);
+    console.log("status-section - writeStatus: ", writeStatus);
   }, [
     writeStatus,
     transactionStatus,
