@@ -21,7 +21,6 @@ export default withMT({
       backgroundImage: () => ({
         "gradient-yellowred":
           "linear-gradient(90deg, #FF616A 0%, #FFC837 100%)",
-        servicesBg: "url('./assets/services-bg-2.jpg')",
         dumbbellBg: "url('./src/assets/bg-1.jpeg')",
       }),
       fontFamily: {

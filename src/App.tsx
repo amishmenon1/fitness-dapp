@@ -8,7 +8,7 @@ import Playground from "./pages/playground";
 
 function App() {
   return (
-    <div className={`bg-dumbbellBg bg-cover `}>
+    <div className={`bg-cover bg-dumbbellBg h-screen w-full `}>
       <Router>
         <Routes>
           <Route path="/login" element={<AuthLayout />}>
