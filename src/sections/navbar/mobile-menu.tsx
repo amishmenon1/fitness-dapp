@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { NavItemType } from "@/routes/paths";
 import { DisclosureButton, DisclosurePanel } from "@headlessui/react";
-import { NavItemType } from "./navbar";
 
 type MobileMenuProps = {
   navigationOptions: any[];
@@ -18,23 +18,25 @@ const MobileMenu = ({
   return (
     <>
       <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pb-3 pt-2">
+        <div className="space-y-1 px-2 pb-3 pt-2 bg-black bg-opacity-70">
           {navigationOptions.map((item: any) => (
+            // <div className="bg-black">
             <DisclosureButton
-              key={item.name}
+              key={item.key}
               as="a"
-              href={item.href}
+              href={item.path}
               onClick={() => onClick(item)}
               className={classNames(
-                current?.name == item.name
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                current?.key == item.key
+                  ? "text-green-500  hover:text-green-300 font-bold"
+                  : "text-gray-300 hover:bg-green-500 hover:text-white",
                 "block rounded-md px-3 py-2 text-base font-medium"
               )}
-              aria-current={current?.name == item.name ? "page" : undefined}
+              aria-current={current?.label == item.label ? "page" : undefined}
             >
-              {item.name}
+              {item.label}
             </DisclosureButton>
+            // </div>
           ))}
         </div>
       </DisclosurePanel>

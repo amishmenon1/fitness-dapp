@@ -13,6 +13,10 @@ export default withMT({
         "secondary-400": "#FFCD58",
         "secondary-500": "#FFC132",
         "footer-100": "#B5946F",
+        "error-500": "#E8422C",
+        "info-500": "#2cbce8",
+        "success-500": "#37c440",
+        "warning-500": "#dae815",
       },
       backgroundImage: () => ({
         "gradient-yellowred":
