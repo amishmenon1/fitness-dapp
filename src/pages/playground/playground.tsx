@@ -1,3 +1,3 @@
 export const Playground = () => {
-  return <div>Playground</div>;
+  return <div></div>;
 };
