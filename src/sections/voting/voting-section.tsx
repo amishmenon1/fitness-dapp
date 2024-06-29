@@ -68,7 +68,7 @@ const VotingSection = () => {
             <Card
               key={card.cardTitle}
               image={card.image}
-              CardTitle={card.cardTitle}
+              cardTitle={card.cardTitle}
               titleHref={card.titleHref}
               onBtnClick={handleClick}
               btnText={

@@ -3,24 +3,26 @@ import { useAccount } from "wagmi";
 
 type CardProps = {
   image?: string;
-  Button?: string;
-  CardDescription?: string;
-  CardTitle?: string;
+  button?: string;
+  cardDescription?: string;
+  cardTitle?: string;
   titleHref?: string;
   btnHref?: string;
-  btnText: string;
-  btnValue: string;
+  btnText?: string;
+  btnValue?: string;
   disabled?: boolean;
   onBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   gradiantDirection?: string;
+  btnComponent?: React.ReactNode;
 };
 
 export const Card = ({
   image,
   btnText,
   btnValue,
+  btnComponent,
   // CardDescription,
-  CardTitle,
+  cardTitle,
   disabled = false,
   onBtnClick,
   gradiantDirection = "r",
@@ -28,7 +30,12 @@ export const Card = ({
   const { isConnected } = useAccount();
   return (
     <>
-      <div className="w-full md:w-4/12 min-w-44">
+      <div
+        className={classNames(
+          !btnComponent ? " md:w-4/12 min-w-44" : "",
+          "w-full"
+        )}
+      >
         <div className="p-4">
           <div
             className={classNames(
@@ -47,10 +54,10 @@ export const Card = ({
               />
             </div>
             <div className="p-6 text-center sm:p-9 md:p-7 xl:p-9 flex flex-col justify-center">
-              <h3 className="flex justify-center mb-4 font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
-                {CardTitle}
+              <h3 className="flex justify-center mb-4 font-semibold text-white hover:text-primary sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+                {cardTitle}
               </h3>
-              <p className="mb-7 text-base leading-relaxed text-white dark:text-dark-6">
+              <p className="mb-7 text-base leading-relaxed text-white">
                 {/* {CardDescription} */}
               </p>
 
@@ -77,6 +84,9 @@ export const Card = ({
                     {btnText}
                   </button>
                 </div>
+              )}
+              {btnComponent && (
+                <div className="flex justify-center">{btnComponent}</div>
               )}
             </div>
           </div>
