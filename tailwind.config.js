@@ -17,6 +17,7 @@ export default withMT({
         "info-500": "#2cbce8",
         "success-500": "#37c440",
         "warning-500": "#dae815",
+        // "green-400": "#008001",
       },
       backgroundImage: () => ({
         "gradient-yellowred":

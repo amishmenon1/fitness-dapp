@@ -25,9 +25,9 @@ const DesktopMenu = ({
               onClick={() => onClick(item)}
               className={classNames(
                 current?.key === item.key
-                  ? "text-green-400  hover:text-green-300 font-bold"
+                  ? "text-green-400  hover:text-blue-gray-200 font-extrabold"
                   : "text-gray-300  hover:text-white",
-                "rounded-md px-3 py-2 text-sm font-medium cursor-pointer hover:cursor-pointer"
+                "rounded-md px-3 py-2 text-md font-medium cursor-pointer hover:cursor-pointer"
               )}
               aria-current={current?.label == item.label ? "page" : undefined}
               to={item.path}
