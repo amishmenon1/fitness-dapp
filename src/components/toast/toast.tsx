@@ -49,7 +49,7 @@ export const Toast = ({ message, type = "info" }: Props) => {
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor"
+                stroke="white"
                 strokeWidth="2"
               >
                 <path d="M18 6 6 18"></path>

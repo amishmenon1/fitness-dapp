@@ -1,6 +1,6 @@
 import Login from "@/pages/auth";
 import LandingPage from "@/pages/landing";
-import Playground from "@/pages/playground";
+// import Playground from "@/pages/playground";
 
 export type NavItemType = {
   key: string;
@@ -19,13 +19,13 @@ export const mainPaths: NavItemType[] = [
     index: true,
     element: <LandingPage />,
   },
-  {
-    key: "playground",
-    label: "Playground",
-    path: "/playground",
-    icon: "",
-    element: <Playground />,
-  },
+  // {
+  //   key: "playground",
+  //   label: "Playground",
+  //   path: "/playground",
+  //   icon: "",
+  //   element: <Playground />,
+  // },
   // {
   //   key: "settings",
   //   label: "Settings",
