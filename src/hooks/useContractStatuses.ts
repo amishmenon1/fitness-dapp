@@ -77,6 +77,12 @@ export const useContractStatuses = (
               .indexOf("UserRejectedRequestError") > -1
           ) {
             setWriteErrorMessage("User rejected request");
+          } else if (
+            writeErrorMsg.cause?.toString().indexOf("ChainMismatchError") > -1
+          ) {
+            setWriteErrorMessage(
+              "Chain mismatch error. Please make sure you're connected to the correct chain."
+            );
           }
           if (transactionErrorMsg)
             setTransactionErrorMessage(

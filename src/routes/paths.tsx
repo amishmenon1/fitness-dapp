@@ -19,13 +19,13 @@ export const mainPaths: NavItemType[] = [
     index: true,
     element: <LandingPage />,
   },
-  {
-    key: "playground",
-    label: "Playground",
-    path: "/playground",
-    icon: "",
-    element: <Playground />,
-  },
+  // {
+  //   key: "playground",
+  //   label: "Playground",
+  //   path: "/playground",
+  //   icon: "",
+  //   element: <Playground />,
+  // },
   // {
   //   key: "settings",
   //   label: "Settings",
