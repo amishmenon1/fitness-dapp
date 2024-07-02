@@ -1,6 +1,6 @@
 import Login from "@/pages/auth";
 import LandingPage from "@/pages/landing";
-import Playground from "@/pages/playground";
+// import Playground from "@/pages/playground";
 
 export type NavItemType = {
   key: string;
