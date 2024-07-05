@@ -43,18 +43,29 @@ const StatusSection = () => {
   const showTransactionSpinner = () =>
     transactionStatusMessage && transactionPending();
 
+  function showToast() {
+    if (writeStatus !== WRITE_IDLE.name) {
+      return (
+        <>
+          {contractStatusMessage && writeStatus !== WRITE_SUCCESS.name && (
+            <Toast type={"info"} message={contractStatusMessage} />
+          )}
+          {contractStatusMessage && writeStatus === WRITE_SUCCESS.name && (
+            <Toast type={"success"} message={contractStatusMessage} />
+          )}
+          {writeErrorMessage && (
+            <Toast type="error" message={writeErrorMessage} />
+          )}
+          {transactionErrorMessage && (
+            <Toast type="error" message={transactionErrorMessage} />
+          )}
+        </>
+      );
+    } else return <></>;
+  }
   return (
     <>
-      {contractStatusMessage && writeStatus !== WRITE_SUCCESS.name && (
-        <Toast type={"info"} message={contractStatusMessage} />
-      )}
-      {contractStatusMessage && writeStatus === WRITE_SUCCESS.name && (
-        <Toast type={"success"} message={contractStatusMessage} />
-      )}
-      {writeErrorMessage && <Toast type="error" message={writeErrorMessage} />}
-      {transactionErrorMessage && (
-        <Toast type="error" message={transactionErrorMessage} />
-      )}
+      {showToast()}
       <div
         className={classNames(
           openStatusModal
