@@ -1,7 +1,10 @@
 import { ContractContext } from "@/contexts/contract-context";
+import { FITNESS_OPTIONS } from "@/data/cards";
 import { useVotingContract } from "@/hooks/useVotingContract";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BaseError, useWaitForTransactionReceipt } from "wagmi";
+import ExerciseOption from "./exercise-option";
+import { CONTRACT_STATUSES } from "@/data/statuses";
 
 const ScoreboardSection = () => {
   const { data, error, isPending, refetch } = useVotingContract();
@@ -10,25 +13,27 @@ const ScoreboardSection = () => {
     hash,
   });
 
+  const [scoresUpdated, setScoresUpdated] = useState(false);
   const [cardioVotes, weightliftingVotes] = data || [];
 
   useEffect(() => {
     async function refetchVotes() {
-      console.log("refetching votes...");
       try {
         await refetch();
+        setScoresUpdated(true);
       } catch (e) {
         console.error(e);
       }
     }
-    console.log(
-      "scoreboard useeffect - transaction status: ",
-      transactionStatus
-    );
-    if (transactionStatus === "success") {
+
+    if (transactionStatus === CONTRACT_STATUSES.TRANSACTION_SUCCESS.name) {
       refetchVotes();
     }
-  }, [transactionStatus, refetch]);
+  }, [transactionStatus, refetch, setScoresUpdated]);
+
+  function resetActiveState() {
+    setScoresUpdated(false);
+  }
 
   if (error)
     return (
@@ -56,17 +61,19 @@ const ScoreboardSection = () => {
               Updating Votes...
             </div>
           ) : (
-            <div className="rounded-b-md xs:text-xl sm:text-2xl flex flex-col items-center justify-center p-8 space-y-4">
-              <div className="bg-white w-full p-2 rounded-md text-center shadow-md">
-                <h5 className=" text-gray-800 font-light">
-                  Cardio: {cardioVotes?.result?.toString()}
-                </h5>
-              </div>
-              <div className="bg-white w-full p-2 rounded-md text-center shadow-md">
-                <h5 className=" text-gray-800 font-light">
-                  Weightlifting: {weightliftingVotes?.result?.toString()}
-                </h5>
-              </div>
+            <div className="rounded-b-md xs:text-xl sm:text-2xl flex flex-col items-center justify-center pb-8 pl-8 pr-8 space-y-4">
+              <ExerciseOption
+                text={FITNESS_OPTIONS.cardio.value}
+                numVotes={cardioVotes?.result?.toString()}
+                scoresUpdated={scoresUpdated}
+                resetCallback={resetActiveState}
+              />
+              <ExerciseOption
+                text={FITNESS_OPTIONS.weightlifting.value}
+                scoresUpdated={scoresUpdated}
+                numVotes={weightliftingVotes?.result?.toString()}
+                resetCallback={resetActiveState}
+              />
             </div>
           )}
         </div>

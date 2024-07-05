@@ -23,6 +23,7 @@ export const useContractStatuses = (
   transactionRefetching: boolean,
   setOpenStatusModal: (value: boolean) => void
 ) => {
+  // console.log("useContractStatuses rendered");
   const [contractStatusMessage, setContractStatusMessage] = useState<string>();
   const [transactionStatusMessage, setTransactionStatusMessage] =
     useState<string>();
@@ -81,7 +82,7 @@ export const useContractStatuses = (
             writeErrorMsg.cause?.toString().indexOf("ChainMismatchError") > -1
           ) {
             setWriteErrorMessage(
-              "Chain mismatch error. Please make sure you're connected to the correct chain."
+              "Chain mismatch error. The voting contract is deployed to the Sepolia network. Please make sure you're connected to the correct chain."
             );
           }
           if (transactionErrorMsg)
@@ -94,8 +95,6 @@ export const useContractStatuses = (
         }
       }
     }
-
-    console.log("status-section - writeStatus: ", writeStatus);
   }, [
     writeStatus,
     transactionStatus,

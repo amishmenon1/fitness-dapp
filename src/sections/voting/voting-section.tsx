@@ -8,12 +8,14 @@ import { ContractContext } from "@/contexts/contract-context";
 import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
 
 const VotingSection = () => {
+  // console.log("voting rendered");
   const { isConnected } = useAccount();
   const { contractState, setContractState, writeContract } =
     useContext(ContractContext);
   const {
     writeStatus, // 'idle' | 'pending' | 'error' | 'success'
   } = contractState;
+
   const { WRITE_STARTED } = CONTRACT_STATUSES;
   const { WRITE_ERROR } = ERROR_STATUSES;
 
@@ -22,17 +24,26 @@ const VotingSection = () => {
    * @param event The button click event.
    */
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-    setContractState({
-      ...contractState,
-      writeStatus: WRITE_STARTED.message,
-      writeErrorMsg: "",
+    const votedWeightlifting =
+      event.currentTarget.value === FITNESS_OPTIONS.weightlifting.value;
+
+    const lastVote = votedWeightlifting
+      ? FITNESS_OPTIONS.weightlifting.value
+      : FITNESS_OPTIONS.cardio.value;
+
+    setContractState((prevState) => {
+      return {
+        ...prevState,
+        writeStatus: WRITE_STARTED.message,
+        writeErrorMsg: "",
+        lastVote,
+      };
     });
 
-    const isWeightlifting =
-      event.currentTarget.value === FITNESS_OPTIONS.weightlifting.title; //"Weightlifting";
-    const functionName = isWeightlifting
+    const functionName = votedWeightlifting
       ? FITNESS_OPTIONS.weightlifting.voteFn
       : FITNESS_OPTIONS.cardio.voteFn; // "voteWeightlifting" : "voteCardio";
+
     try {
       writeContract(
         {
@@ -43,18 +54,29 @@ const VotingSection = () => {
           chainId: sepolia.id,
         },
         {
-          onSuccess: (_response: any) => {
-            setContractState({ ...contractState, writeStatus });
+          onSuccess: async (_response: any) => {
+            setContractState((prevState) => {
+              return {
+                ...prevState,
+                writeStatus,
+              };
+            });
           },
-          onSettled: (_response: any) => {
-            setContractState({ ...contractState, writeStatus });
+          onSettled: async (_response: any) => {
+            setContractState((prevState) => {
+              return {
+                ...prevState,
+                writeStatus,
+              };
+            });
           },
           onError: (error: any) => {
-            console.error("Error writing contract: ", error);
-            setContractState({
-              ...contractState,
-              writeStatus: WRITE_ERROR.name, // "error",
-              writeErrorMsg: error?.message,
+            setContractState((prevState) => {
+              return {
+                ...prevState,
+                writeStatus: WRITE_ERROR.name,
+                writeErrorMsg: error?.message,
+              };
             });
           },
         }
@@ -76,14 +98,20 @@ const VotingSection = () => {
               titleHref={card.titleHref}
               onBtnClick={handleClick}
               btnText={
-                ["pending", "started"].includes(writeStatus)
+                [
+                  CONTRACT_STATUSES.WRITE_PENDING.name,
+                  CONTRACT_STATUSES.WRITE_STARTED.name,
+                ].includes(writeStatus)
                   ? "Voting..."
                   : "Vote!"
               }
               // btnText={voteButtonText()}
               btnValue={card.value}
               disabled={
-                ["pending", "started"].includes(writeStatus) || !isConnected
+                [
+                  CONTRACT_STATUSES.WRITE_PENDING.name,
+                  CONTRACT_STATUSES.WRITE_STARTED.name,
+                ].includes(writeStatus) || !isConnected
               }
               gradiantDirection={card.gradiantDirection}
             />

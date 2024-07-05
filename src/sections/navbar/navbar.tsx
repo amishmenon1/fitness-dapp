@@ -1,29 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import AuthButton from "@/components/connect-wallet";
 import { Disclosure } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfileDropdown from "./profile-dropdown";
 import MobileMenu from "./mobile-menu";
 import DesktopMenu from "./desktop-menu";
 import MobileMenuButton from "./mobile-menu-button";
 import { useAccount } from "wagmi";
 import { NavItemType, mainPaths } from "@/routes/paths";
-import { useLocation } from "react-router-dom";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 const NavBar = () => {
-  const { pathname } = useLocation();
   const [current, setCurrent] = useState<NavItemType>();
   const { isConnected, address } = useAccount();
-
-  useEffect(() => {
-    const path = mainPaths.find((item) => item.path === pathname);
-    setCurrent(path);
-  }, [pathname, setCurrent]);
-
   function onNavItemClick(item: NavItemType) {
     setCurrent(item);
   }
@@ -43,7 +35,7 @@ const NavBar = () => {
                 className="relative flex h-16 items-center justify-between"
               >
                 <div
-                  id="nav-container3"
+                  id="mobile-nav-container"
                   className="absolute inset-y-0 left-0 flex items-center sm:hidden"
                 >
                   {/* Mobile menu button*/}

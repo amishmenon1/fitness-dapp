@@ -5,6 +5,7 @@ type ContractType = {
   hash?: `0x${string}` | undefined;
   writeErrorMsg: any;
   writeStatus: string; //"idle" | "pending" | "error" | "success" | "started";
+  lastVote?: string;
 };
 
 type ContractContextProps = {
@@ -12,7 +13,6 @@ type ContractContextProps = {
   contractState: ContractType;
   hash?: `0x${string}` | undefined;
   writeContract: (args: any, options: any) => void;
-  writeErrorMsg?: any;
 };
 
 type ContractContextProviderProps = {
@@ -32,6 +32,7 @@ export const ContractContext =
   createContext<ContractContextProps>(INITIAL_STATE);
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
+  // console.log("context rendered");
   const [contractState, setContractState] = useState<ContractType>(
     INITIAL_STATE.contractState
   );
@@ -44,10 +45,13 @@ const ContractProvider = ({ children }: ContractContextProviderProps) => {
   } = useWriteContract();
 
   useEffect(() => {
-    console.log("context - writeStatus: ", writeStatus);
-    setContractState({
-      writeStatus,
-      writeErrorMsg,
+    if (!writeStatus) return;
+    setContractState((prevState) => {
+      return {
+        ...prevState,
+        writeStatus,
+        writeErrorMsg,
+      };
     });
   }, [writeStatus, writeErrorMsg]);
 
@@ -58,7 +62,6 @@ const ContractProvider = ({ children }: ContractContextProviderProps) => {
         contractState,
         setContractState,
         writeContract,
-        writeErrorMsg,
       }}
     >
       {children}
