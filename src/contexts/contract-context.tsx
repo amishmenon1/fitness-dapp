@@ -32,7 +32,7 @@ export const ContractContext =
   createContext<ContractContextProps>(INITIAL_STATE);
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
-  console.log("context rendered");
+  // console.log("context rendered");
   const [contractState, setContractState] = useState<ContractType>(
     INITIAL_STATE.contractState
   );

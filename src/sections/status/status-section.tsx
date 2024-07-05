@@ -4,11 +4,11 @@ import { CONTRACT_STATUSES } from "@/data/statuses";
 import { useContractStatuses } from "@/hooks/useContractStatuses";
 import { Spinner } from "@material-tailwind/react";
 import classNames from "classnames";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useWaitForTransactionReceipt } from "wagmi";
 
 const StatusSection = () => {
-  console.log("status section rendered");
+  // console.log("status section rendered");
   const {
     contractState: { writeErrorMsg, writeStatus },
     hash,

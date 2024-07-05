@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import AuthButton from "@/components/connect-wallet";
 import { Disclosure } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfileDropdown from "./profile-dropdown";
 import MobileMenu from "./mobile-menu";
 import DesktopMenu from "./desktop-menu";
 import MobileMenuButton from "./mobile-menu-button";
-import { useAccount, useChainId, useChains } from "wagmi";
+import { useAccount } from "wagmi";
 import { NavItemType, mainPaths } from "@/routes/paths";
-import { useLocation } from "react-router-dom";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

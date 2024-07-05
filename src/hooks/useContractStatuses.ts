@@ -23,7 +23,7 @@ export const useContractStatuses = (
   transactionRefetching: boolean,
   setOpenStatusModal: (value: boolean) => void
 ) => {
-  console.log("useContractStatuses rendered");
+  // console.log("useContractStatuses rendered");
   const [contractStatusMessage, setContractStatusMessage] = useState<string>();
   const [transactionStatusMessage, setTransactionStatusMessage] =
     useState<string>();

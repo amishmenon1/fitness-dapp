@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { useAccount, useChainId, useChains } from "wagmi";
+import { useAccount } from "wagmi";
 import { VOTING_ABI as abi } from "@/abi/VotingData";
 import { sepolia } from "viem/chains";
 import { useContext } from "react";
@@ -8,7 +8,7 @@ import { ContractContext } from "@/contexts/contract-context";
 import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
 
 const VotingSection = () => {
-  console.log("voting rendered");
+  // console.log("voting rendered");
   const { isConnected } = useAccount();
   const { contractState, setContractState, writeContract } =
     useContext(ContractContext);
@@ -41,8 +41,8 @@ const VotingSection = () => {
     });
 
     const functionName = votedWeightlifting
-      ? "voteWeightlifting" //FITNESS_OPTIONS.weightlifting.voteFn
-      : "voteCardio"; //FITNESS_OPTIONS.cardio.voteFn; // "voteWeightlifting" : "voteCardio";
+      ? FITNESS_OPTIONS.weightlifting.voteFn
+      : FITNESS_OPTIONS.cardio.voteFn; // "voteWeightlifting" : "voteCardio";
 
     try {
       writeContract(
@@ -98,14 +98,20 @@ const VotingSection = () => {
               titleHref={card.titleHref}
               onBtnClick={handleClick}
               btnText={
-                ["pending", "started"].includes(writeStatus)
+                [
+                  CONTRACT_STATUSES.WRITE_PENDING.name,
+                  CONTRACT_STATUSES.WRITE_STARTED.name,
+                ].includes(writeStatus)
                   ? "Voting..."
                   : "Vote!"
               }
               // btnText={voteButtonText()}
               btnValue={card.value}
               disabled={
-                ["pending", "started"].includes(writeStatus) || !isConnected
+                [
+                  CONTRACT_STATUSES.WRITE_PENDING.name,
+                  CONTRACT_STATUSES.WRITE_STARTED.name,
+                ].includes(writeStatus) || !isConnected
               }
               gradiantDirection={card.gradiantDirection}
             />

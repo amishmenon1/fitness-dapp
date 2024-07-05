@@ -1,8 +1,5 @@
-import { Button, Transition } from "@headlessui/react";
-import { ArrowPathIcon } from "@heroicons/react/16/solid";
+import { Transition } from "@headlessui/react";
 import classNames from "classnames";
-import clsx from "clsx";
-import { useState } from "react";
 
 type AnimatedDivProps = {
   children?: React.ReactNode;
