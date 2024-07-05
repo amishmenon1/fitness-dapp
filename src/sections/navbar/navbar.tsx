@@ -6,7 +6,7 @@ import ProfileDropdown from "./profile-dropdown";
 import MobileMenu from "./mobile-menu";
 import DesktopMenu from "./desktop-menu";
 import MobileMenuButton from "./mobile-menu-button";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId, useChains } from "wagmi";
 import { NavItemType, mainPaths } from "@/routes/paths";
 import { useLocation } from "react-router-dom";
 
@@ -15,15 +15,8 @@ function classNames(...classes: string[]) {
 }
 
 const NavBar = () => {
-  const { pathname } = useLocation();
   const [current, setCurrent] = useState<NavItemType>();
   const { isConnected, address } = useAccount();
-
-  useEffect(() => {
-    const path = mainPaths.find((item) => item.path === pathname);
-    setCurrent(path);
-  }, [pathname, setCurrent]);
-
   function onNavItemClick(item: NavItemType) {
     setCurrent(item);
   }
@@ -43,7 +36,7 @@ const NavBar = () => {
                 className="relative flex h-16 items-center justify-between"
               >
                 <div
-                  id="nav-container3"
+                  id="mobile-nav-container"
                   className="absolute inset-y-0 left-0 flex items-center sm:hidden"
                 >
                   {/* Mobile menu button*/}

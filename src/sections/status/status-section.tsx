@@ -4,16 +4,16 @@ import { CONTRACT_STATUSES } from "@/data/statuses";
 import { useContractStatuses } from "@/hooks/useContractStatuses";
 import { Spinner } from "@material-tailwind/react";
 import classNames from "classnames";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useWaitForTransactionReceipt } from "wagmi";
 
 const StatusSection = () => {
+  console.log("status section rendered");
   const {
     contractState: { writeErrorMsg, writeStatus },
     hash,
   } = useContext(ContractContext);
   const [openStatusModal, setOpenStatusModal] = useState(false);
-
   const { WRITE_IDLE, TRANSACTION_PENDING, WRITE_SUCCESS } = CONTRACT_STATUSES;
   const {
     isRefetching: transactionRefetching,
@@ -36,16 +36,9 @@ const StatusSection = () => {
     setOpenStatusModal
   );
 
-  console.log("contract status: ", contractStatusMessage);
-  console.log("transaction status: ", transactionStatusMessage);
-  console.log("write error: ", writeErrorMessage);
-  console.log("transaction error: ", transactionErrorMessage);
-
   const transactionPending = () =>
     ![WRITE_IDLE.name].includes(writeStatus) &&
     transactionStatus === TRANSACTION_PENDING.name;
-
-  const notIdle = () => writeStatus !== WRITE_IDLE.name;
 
   const showTransactionSpinner = () =>
     transactionStatusMessage && transactionPending();
@@ -64,7 +57,7 @@ const StatusSection = () => {
       )}
       <div
         className={classNames(
-          notIdle() && openStatusModal
+          openStatusModal
             ? "absolute top-56 w-full left-0 h-52 bg-black bg-opacity-90 rounded-lg"
             : "hidden",
           "text-sm w-full z-50 py-2 flex flex-col items-center justify-center md:absolute md:top-36 md:left-0"
