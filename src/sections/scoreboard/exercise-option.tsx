@@ -1,5 +1,6 @@
 import AnimatedDiv from "@/components/animation";
 import { ContractContext } from "@/contexts/contract-context";
+import { CONTRACT_STATUSES } from "@/data/statuses";
 import classNames from "classnames";
 import { useState, useContext, useEffect, useCallback } from "react";
 
@@ -36,6 +37,7 @@ const ExerciseOption = ({
             return {
               ...prevState,
               lastVote: undefined,
+              writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
             };
           });
           resetCallback();
