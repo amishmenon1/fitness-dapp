@@ -77,7 +77,7 @@ export const Card = ({
                     onClick={onBtnClick}
                     className={classNames(
                       "",
-                      "text-xs xs:text-sm font-bold bg-gradient-to-l from-blue-gray-800 to-gray-400 px-4 xs:w-1/2 xs:min-w-1/2 rounded-full text-body-color transition hover:border-primary hover:text-white"
+                      " hover:bg-black hover:text-white text-xs xs:text-sm  text-gray-900 font-bold bg-gray-400 px-4 xs:w-1/2 xs:min-w-1/2 rounded-full transition"
                     )}
                     disabled={disabled}
                   >
