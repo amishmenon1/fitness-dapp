@@ -1,9 +1,16 @@
 import { CONTRACT_STATUSES } from "@/data/statuses";
 import {
+  ActionType,
   ContractState,
   writeStatusReducer,
 } from "@/reducers/write-status-reducer";
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 type ContractContextProviderProps = {
   children: React.ReactNode;
@@ -11,6 +18,7 @@ type ContractContextProviderProps = {
 
 const INITIAL_STATE: ContractState = {
   writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
+  writeStatusMsg: CONTRACT_STATUSES.WRITE_IDLE.message,
   transactionStatus: CONTRACT_STATUSES.TRANSACTION_IDLE.name,
   transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_IDLE.message,
   writeErrorMsg: null,
@@ -19,7 +27,27 @@ const INITIAL_STATE: ContractState = {
   openStatusModal: false,
 };
 
-export const ContractContext = createContext({} as any);
+export type ContractState = {
+  writeStatus: string;
+  transactionStatus?: string | null;
+  writeStatusMsg?: string | null;
+  transactionStatusMsg?: string | null;
+  writeErrorMsg?: any | null;
+  transactionErrorMsg?: any | null;
+  transactionRefetching?: boolean;
+  hash?: `0x${string}` | undefined;
+  lastVote?: string;
+  openStatusModal: boolean;
+  reset?: boolean;
+};
+
+export const ContractContext = createContext<{
+  contractState: ContractState;
+  dispatch: Dispatch<ActionType>;
+}>({
+  contractState: INITIAL_STATE,
+  dispatch: () => null,
+});
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
   // console.log("context rendered");

@@ -21,9 +21,9 @@ const VotingSection = () => {
   } = useContext(ContractContext);
 
   const { writeContract, status: writeStatus } = useWriteContract();
-  const transaction = useWaitForTransactionReceipt({
-    hash,
-  });
+  // const transaction = useWaitForTransactionReceipt({
+  //   hash,
+  // });
 
   /**
    * Places a vote.
@@ -39,7 +39,10 @@ const VotingSection = () => {
 
     dispatch({
       type: ACTIONS.WRITE_INITIATED,
-      payload: { lastVote, transaction },
+      payload: {
+        lastVote,
+        // transaction
+      },
     });
 
     const functionName = votedWeightlifting
@@ -57,44 +60,31 @@ const VotingSection = () => {
         },
         {
           onSuccess: async (_response: any) => {
-            // setContractState((prevState) => {
-            //   return {
-            //     ...prevState,
-            //     writeStatus,
-            //   };
-            // });
             dispatch({
               type: ACTIONS.WRITE_COMPLETE,
-              payload: { writeStatus, transaction },
+              payload: {
+                writeStatus,
+                // transaction
+              },
             });
           },
           onSettled: async (response: any) => {
-            // setContractState((prevState) => {
-            //   return {
-            //     ...prevState,
-            //     writeStatus,
-            //   };
-            // });
             dispatch({
               type: ACTIONS.WRITE_SETTLED,
-              payload: { writeStatus, hash: response, transaction },
+              payload: {
+                writeStatus,
+                hash: response,
+                // transaction
+              },
             });
           },
           onError: (error: any) => {
-            // setContractState((prevState) => {
-            //   return {
-            //     ...prevState,
-            //     writeStatus: WRITE_ERROR.name,
-            //     writeErrorMsg: error?.message,
-            //   };
-            // });
             dispatch({
               type: ACTIONS.WRITE_ERROR,
-              payload: { error, transaction },
-              // {
-              //   writeStatus: WRITE_ERROR.name,
-              //   writeErrorMsg: error?.message,
-              // },
+              payload: {
+                error,
+                // transaction
+              },
             });
           },
         }

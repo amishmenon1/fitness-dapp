@@ -13,12 +13,11 @@ export type ContractState = {
   lastVote?: string;
   openStatusModal: boolean;
   reset?: boolean;
-  // setUserClosedModal?: boolean;
 };
 
 export type ActionType = {
   type: any;
-  payload: any;
+  payload?: any;
 };
 
 function getWriteErrorMessage(error: any) {
@@ -91,17 +90,6 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
   const { type, payload } = action;
   switch (type) {
     case ACTIONS.SYSTEM_IDLE: {
-      console.log("system idle state: ", {
-        ...state,
-        writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
-        writeStatusMsg: CONTRACT_STATUSES.WRITE_IDLE.message,
-        transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_IDLE.message,
-        writeErrorMsg: null,
-        transactionErrorMsg: null,
-        openStatusModal: false,
-        lastVote: undefined,
-        reset: false,
-      });
       return {
         ...state,
         writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
@@ -117,56 +105,44 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
     case ACTIONS.WRITE_INITIATED: {
       if (!payload) throw new Error("Payload empty.");
       const { lastVote, transaction } = payload;
-      // console.log("write intiated state: ", {
-      //   ...state,
-      //   openStatusModal: true,
-      //   writeStatus: CONTRACT_STATUSES.WRITE_STARTED.name,
-      //   writeStatusMsg: CONTRACT_STATUSES.WRITE_STARTED.message,
-      //   transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_STARTED.message,
-      //   lastVote,
-      // });
       return {
         ...state,
         openStatusModal: true,
         writeStatus: CONTRACT_STATUSES.WRITE_STARTED.message,
         writeStatusMsg: CONTRACT_STATUSES.WRITE_STARTED.message,
-        transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_STARTED.message,
+        transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_PENDING.message,
         lastVote,
       } as ContractState;
     }
 
     case ACTIONS.WRITE_COMPLETE: {
       if (!payload) throw new Error("Payload empty.");
-      const { writeStatus, transaction } = payload;
-      const transactionState = updatedTransactionState(state, transaction);
-
-      // console.log("write complete state: ", {
-      //   ...state,
-      //   ...transactionState,
-      //   writeStatus: CONTRACT_STATUSES.WRITE_SUCCESS.name,
-      //   writeStatusMsg: CONTRACT_STATUSES.WRITE_SUCCESS.message,
-      // });
+      const {
+        writeStatus,
+        // transaction
+      } = payload;
       return {
         ...state,
-        ...transactionState,
+        // ...transactionState,
         writeStatus: CONTRACT_STATUSES.WRITE_SUCCESS.name,
         writeStatusMsg: CONTRACT_STATUSES.WRITE_SUCCESS.message,
       } as ContractState;
     }
+
     case ACTIONS.WRITE_SETTLED: {
       if (!payload) throw new Error("Payload empty.");
       const { writeStatus, hash, transaction } = payload;
-      const transactionState = updatedTransactionState(state, transaction);
+      // const transactionState = updatedTransactionState(state, transaction);
       console.log("write settled state: ", {
         ...state,
-        ...transactionState,
+        // ...transactionState,
         hash,
         writeStatus,
       });
 
       return {
         ...state,
-        ...transactionState,
+        // ...transactionState,
         hash,
         writeStatus: CONTRACT_STATUSES.WRITE_SETTLED.name,
         writeStatusMsg: null,
@@ -175,38 +151,27 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
 
     case ACTIONS.WRITE_ERROR: {
       if (!payload) throw new Error("Payload empty.");
-      const { error, transaction } = payload;
+      const {
+        error,
+        // transaction
+      } = payload;
       if (!error) return;
       const errorMsg = getWriteErrorMessage(error);
-      const transactionState = updatedTransactionState(state, transaction);
-      // console.log("write error state: ", {
-      //   ...state,
-      //   ...transactionState,
-      //   writeStatus: ERROR_STATUSES.WRITE_ERROR.name,
-      //   writeStatusMsg: null,
-      //   writeErrorMsg: errorMsg,
-      // });
+      // const transactionState = updatedTransactionState(state, transaction);
       return {
         ...state,
-        ...transactionState,
+        // ...transactionState,
         writeStatus: ERROR_STATUSES.WRITE_ERROR.name,
         writeStatusMsg: null,
         writeErrorMsg: errorMsg,
-      };
+        transactionErrorMsg: ERROR_STATUSES.TRANSACTION_ERROR.message,
+        transactionStatus: ERROR_STATUSES.TRANSACTION_ERROR.name,
+        transactionStatusMsg: null,
+      } as ContractState;
       // break;
     }
 
     case "RESET_STATUS": {
-      // console.log("reset status state: ", {
-      //   ...state,
-      //   writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
-      //   writeStatusMsg: CONTRACT_STATUSES.WRITE_IDLE.message,
-      //   transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_IDLE.message,
-      //   writeErrorMsg: null,
-      //   transactionErrorMsg: null,
-      //   openStatusModal: false,
-      //   lastVote: undefined,
-      // });
       return {
         ...state,
         writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
@@ -217,17 +182,15 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
         openStatusModal: false,
         lastVote: undefined,
       } as ContractState;
-      // break;
     }
 
     case ACTIONS.TRANSACTION_STATUS_CHANGE: {
       const { transaction } = payload;
-      console.log("transaction status change payload: ", payload);
       const transactionState = updatedTransactionState(state, transaction);
       return {
         ...state,
         ...transactionState,
-      };
+      } as ContractState;
     }
 
     default:

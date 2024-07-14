@@ -25,12 +25,9 @@ const StatusModal = ({
   writeErrorMessage,
   transactionErrorMessage,
 }: StatusModalProps) => {
-  const [userClosedModal, setUserClosedModal] = useState(false);
   function onModalClose() {
-    // setUserClosedModal(true);
     onClose();
   }
-  console.log("user closed modal: ", userClosedModal);
   return (
     <>
       {showModal ? (
@@ -168,10 +165,9 @@ const StatusSection = () => {
       {showToast()}
       <StatusModal
         showModal={openStatusModal}
-        // modalClosed={userClosedModal}
         onClose={resetStatus}
         showSpinner={showTransactionSpinner()}
-        statusMessage={transactionStatusMessage}
+        statusMessage={transactionStatusMessage || ""}
         writeErrorMessage={writeErrorMessage}
         transactionErrorMessage={transactionErrorMessage}
       />
