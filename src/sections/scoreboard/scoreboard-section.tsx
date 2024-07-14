@@ -5,13 +5,21 @@ import { useContext, useEffect, useState } from "react";
 import { BaseError, useWaitForTransactionReceipt } from "wagmi";
 import ExerciseOption from "./exercise-option";
 import { CONTRACT_STATUSES } from "@/data/statuses";
+import { ACTIONS } from "@/actions/voting-actions";
 
 const ScoreboardSection = () => {
   const { data, error, isPending, refetch } = useVotingContract();
-  const { hash } = useContext(ContractContext);
-  const { status: transactionStatus } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const {
+    contractState: { transactionStatus },
+    dispatch,
+  } = useContext(ContractContext);
+  // const { status: transactionStatus } = useWaitForTransactionReceipt({
+  //   hash,
+  // });
+
+  // const { status: transactionStatus } = useWaitForTransactionReceipt({
+  //   hash,
+  // });
 
   const [scoresUpdated, setScoresUpdated] = useState(false);
   const [cardioVotes, weightliftingVotes] = data || [];
@@ -26,10 +34,17 @@ const ScoreboardSection = () => {
       }
     }
 
+    // dispatch({
+    //   type: ACTIONS.TRANSACTION_PENDING,
+    //   // payload: { transactionStatus },
+    // });
+
     if (transactionStatus === CONTRACT_STATUSES.TRANSACTION_SUCCESS.name) {
       refetchVotes();
     }
-  }, [transactionStatus, refetch, setScoresUpdated]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionStatus]);
 
   function resetActiveState() {
     setScoresUpdated(false);

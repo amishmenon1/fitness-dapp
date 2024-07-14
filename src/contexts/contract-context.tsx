@@ -1,67 +1,38 @@
-import React, { createContext, useEffect, useState } from "react";
-import { useWriteContract } from "wagmi";
-
-type ContractType = {
-  hash?: `0x${string}` | undefined;
-  writeErrorMsg: any;
-  writeStatus: string; //"idle" | "pending" | "error" | "success" | "started";
-  lastVote?: string;
-};
-
-type ContractContextProps = {
-  setContractState: React.Dispatch<React.SetStateAction<ContractType>>;
-  contractState: ContractType;
-  hash?: `0x${string}` | undefined;
-  writeContract: (args: any, options: any) => void;
-};
+import { CONTRACT_STATUSES } from "@/data/statuses";
+import {
+  ContractState,
+  writeStatusReducer,
+} from "@/reducers/write-status-reducer";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 
 type ContractContextProviderProps = {
   children: React.ReactNode;
 };
 
-const INITIAL_STATE = {
-  contractState: {
-    writeStatus: "idle",
-    writeErrorMsg: null,
-  },
-  setContractState: () => {},
-  writeContract: () => {},
+const INITIAL_STATE: ContractState = {
+  writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
+  transactionStatus: CONTRACT_STATUSES.TRANSACTION_IDLE.name,
+  transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_IDLE.message,
+  writeErrorMsg: null,
+  transactionErrorMsg: null,
+  transactionRefetching: false,
+  openStatusModal: false,
 };
 
-export const ContractContext =
-  createContext<ContractContextProps>(INITIAL_STATE);
+export const ContractContext = createContext({} as any);
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
   // console.log("context rendered");
-  const [contractState, setContractState] = useState<ContractType>(
-    INITIAL_STATE.contractState
+  const [contractState, dispatch] = useReducer(
+    writeStatusReducer,
+    INITIAL_STATE
   );
-
-  const {
-    data: hash,
-    writeContract,
-    status: writeStatus, // 'idle' | 'pending' | 'error' | 'success'
-    error: writeErrorMsg,
-  } = useWriteContract();
-
-  useEffect(() => {
-    if (!writeStatus) return;
-    setContractState((prevState) => {
-      return {
-        ...prevState,
-        writeStatus,
-        writeErrorMsg,
-      };
-    });
-  }, [writeStatus, writeErrorMsg]);
 
   return (
     <ContractContext.Provider
       value={{
-        hash,
         contractState,
-        setContractState,
-        writeContract,
+        dispatch,
       }}
     >
       {children}
