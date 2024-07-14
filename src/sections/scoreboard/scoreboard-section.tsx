@@ -12,13 +12,6 @@ const ScoreboardSection = () => {
   const {
     contractState: { transactionStatus },
   } = useContext(ContractContext);
-  // const { status: transactionStatus } = useWaitForTransactionReceipt({
-  //   hash,
-  // });
-
-  // const { status: transactionStatus } = useWaitForTransactionReceipt({
-  //   hash,
-  // });
 
   const [scoresUpdated, setScoresUpdated] = useState(false);
   const [cardioVotes, weightliftingVotes] = data || [];
@@ -32,11 +25,6 @@ const ScoreboardSection = () => {
         console.error(e);
       }
     }
-
-    // dispatch({
-    //   type: ACTIONS.TRANSACTION_PENDING,
-    //   // payload: { transactionStatus },
-    // });
 
     if (transactionStatus === CONTRACT_STATUSES.TRANSACTION_SUCCESS.name) {
       refetchVotes();

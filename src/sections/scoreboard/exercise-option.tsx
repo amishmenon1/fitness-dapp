@@ -33,13 +33,6 @@ const ExerciseOption = ({
         setShow(true);
         setTimeout(() => {
           setIsActive(false);
-          // setContractState((prevState) => {
-          //   return {
-          //     ...prevState,
-          //     lastVote: undefined,
-          //     writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
-          //   };
-          // });
           dispatch({
             type: ACTIONS.SYSTEM_IDLE,
           });

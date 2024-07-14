@@ -8,7 +8,6 @@ import { useWaitForTransactionReceipt } from "wagmi";
 
 type StatusModalProps = {
   showModal: boolean;
-  // modalClosed: boolean;
   onClose: () => void;
   showSpinner?: boolean;
   statusMessage?: string;

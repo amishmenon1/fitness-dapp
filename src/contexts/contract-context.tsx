@@ -21,20 +21,6 @@ const INITIAL_STATE: ContractState = {
   openStatusModal: false,
 };
 
-// export type ContractState = {
-//   writeStatus: string;
-//   transactionStatus?: string | null;
-//   writeStatusMsg?: string | null;
-//   transactionStatusMsg?: string | null;
-//   writeErrorMsg?: any | null;
-//   transactionErrorMsg?: any | null;
-//   transactionRefetching?: boolean;
-//   hash?: `0x${string}` | undefined;
-//   lastVote?: string;
-//   openStatusModal: boolean;
-//   reset?: boolean;
-// };
-
 export const ContractContext = createContext<{
   contractState: ContractState;
   dispatch: Dispatch<ActionType>;

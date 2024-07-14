@@ -37,7 +37,7 @@ const VotingSection = () => {
 
     const functionName = votedWeightlifting
       ? FITNESS_OPTIONS.weightlifting.voteFn
-      : FITNESS_OPTIONS.cardio.voteFn; // "voteWeightlifting" : "voteCardio";
+      : FITNESS_OPTIONS.cardio.voteFn;
 
     try {
       writeContract(
@@ -54,7 +54,6 @@ const VotingSection = () => {
               type: ACTIONS.WRITE_COMPLETE,
               payload: {
                 writeStatus,
-                // transaction
               },
             });
           },
@@ -64,7 +63,6 @@ const VotingSection = () => {
               payload: {
                 writeStatus,
                 hash: response,
-                // transaction
               },
             });
           },
@@ -73,7 +71,6 @@ const VotingSection = () => {
               type: ACTIONS.WRITE_ERROR,
               payload: {
                 error,
-                // transaction
               },
             });
           },
@@ -103,7 +100,6 @@ const VotingSection = () => {
                   ? "Voting..."
                   : "Vote!"
               }
-              // btnText={voteButtonText()}
               btnValue={card.value}
               disabled={
                 [

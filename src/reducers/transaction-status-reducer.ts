@@ -17,7 +17,6 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
         writeStatusMsg: CONTRACT_STATUSES.WRITE_IDLE.message,
         transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_IDLE.message,
       } as ContractState;
-      // break;
     }
 
     case ACTIONS.WRITE_INITIATED: {
@@ -32,7 +31,6 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
         transactionStatusMsg: CONTRACT_STATUSES.TRANSACTION_STARTED.message,
         lastVote,
       } as ContractState;
-      // break;
     }
 
     default:
@@ -42,18 +40,3 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
       } as ContractState;
   }
 }
-
-/**
- 
-if (transactionStatus === TRANSACTION_PENDING.name) {
-        const contractIsIdle = [WRITE_IDLE.name].includes(writeStatus);
-        if (!contractIsIdle) transactionStatusMsg = TRANSACTION_PENDING.message;
-        else transactionStatusMsg = "";
-      }
-
-      if (transactionStatus === TRANSACTION_SUCCESS.name)
-        transactionStatusMsg = TRANSACTION_SUCCESS.message;
-
-      if (transactionRefetching)
-        transactionStatusMsg = TRANSACTION_REFETCHING.message;
- */
