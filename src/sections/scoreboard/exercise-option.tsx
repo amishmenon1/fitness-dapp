@@ -1,6 +1,6 @@
+import { ACTIONS } from "@/actions/voting-actions";
 import AnimatedDiv from "@/components/animation";
 import { ContractContext } from "@/contexts/contract-context";
-import { CONTRACT_STATUSES } from "@/data/statuses";
 import classNames from "classnames";
 import { useState, useContext, useEffect, useCallback } from "react";
 
@@ -21,7 +21,7 @@ const ExerciseOption = ({
   const [show, setShow] = useState(true);
   const {
     contractState: { lastVote },
-    setContractState,
+    dispatch,
   } = useContext(ContractContext);
 
   const animate = useCallback(() => {
@@ -33,18 +33,15 @@ const ExerciseOption = ({
         setShow(true);
         setTimeout(() => {
           setIsActive(false);
-          setContractState((prevState) => {
-            return {
-              ...prevState,
-              lastVote: undefined,
-              writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,
-            };
+          dispatch({
+            type: ACTIONS.SYSTEM_IDLE,
           });
           resetCallback();
         }, 3000);
       }, 500);
     }
-  }, [lastVote, text, resetCallback, setContractState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastVote, text]);
 
   useEffect(() => {
     if (scoresUpdated) {
