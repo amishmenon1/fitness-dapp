@@ -1,7 +1,6 @@
 import { ACTIONS } from "@/actions/voting-actions";
 import AnimatedDiv from "@/components/animation";
 import { ContractContext } from "@/contexts/contract-context";
-import { CONTRACT_STATUSES } from "@/data/statuses";
 import classNames from "classnames";
 import { useState, useContext, useEffect, useCallback } from "react";
 

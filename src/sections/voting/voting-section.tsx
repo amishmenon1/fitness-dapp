@@ -1,29 +1,19 @@
 import Card from "@/components/card";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { VOTING_ABI as abi } from "@/abi/VotingData";
 import { sepolia } from "viem/chains";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { FITNESS_OPTIONS, FitnessCard, cards } from "@/data/cards";
 import { ContractContext } from "@/contexts/contract-context";
-import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
+import { CONTRACT_STATUSES } from "@/data/statuses";
 import { ACTIONS } from "@/actions/voting-actions";
 
 const VotingSection = () => {
   console.log("voting rendered");
   const { isConnected } = useAccount();
-  const {
-    contractState: { hash },
-    dispatch,
-  } = useContext(ContractContext);
+  const { dispatch } = useContext(ContractContext);
 
   const { writeContract, status: writeStatus } = useWriteContract();
-  // const transaction = useWaitForTransactionReceipt({
-  //   hash,
-  // });
 
   /**
    * Places a vote.

@@ -2,9 +2,8 @@ import { ACTIONS } from "@/actions/voting-actions";
 import Toast from "@/components/toast";
 import { ContractContext } from "@/contexts/contract-context";
 import { CONTRACT_STATUSES } from "@/data/statuses";
-import { useContractStatuses } from "@/hooks/useContractStatuses";
 import { Spinner } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useWaitForTransactionReceipt } from "wagmi";
 
 type StatusModalProps = {
@@ -141,6 +140,9 @@ const StatusSection = () => {
   }
 
   function showToast() {
+    console.log("contractStatusMessage: ", contractStatusMessage);
+    console.log("writeStatus: ", writeStatus);
+    debugger;
     if (openStatusModal) {
       return (
         <>

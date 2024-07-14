@@ -1,5 +1,9 @@
 import { ACTIONS } from "@/actions/voting-actions";
-import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
+import {
+  CONTRACT_STATUSES,
+  ERROR_CODES,
+  ERROR_STATUSES,
+} from "@/data/statuses";
 
 export type ContractState = {
   writeStatus: string;
@@ -22,12 +26,11 @@ export type ActionType = {
 
 function getWriteErrorMessage(error: any) {
   let errorMsg = error.message;
-  if (error.cause?.toString().indexOf("UserRejectedRequestError") > -1) {
-    errorMsg = "User rejected request";
+  if (error.cause?.toString().indexOf(ERROR_CODES.USER_REJECTED.name) > -1) {
+    errorMsg = ERROR_CODES.USER_REJECTED.message;
   }
-  if (error.cause?.toString().indexOf("ChainMismatchError") > -1) {
-    errorMsg =
-      "Chain mismatch error. The voting contract is deployed to the Sepolia network. Please make sure you're connected to the correct chain.";
+  if (error.cause?.toString().indexOf(ERROR_CODES.CHAIN_MISMATCH.name) > -1) {
+    errorMsg = ERROR_CODES.CHAIN_MISMATCH.message;
   }
   return errorMsg;
 }
@@ -104,7 +107,7 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
     }
     case ACTIONS.WRITE_INITIATED: {
       if (!payload) throw new Error("Payload empty.");
-      const { lastVote, transaction } = payload;
+      const { lastVote } = payload;
       return {
         ...state,
         openStatusModal: true,
@@ -116,14 +119,8 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
     }
 
     case ACTIONS.WRITE_COMPLETE: {
-      if (!payload) throw new Error("Payload empty.");
-      const {
-        writeStatus,
-        // transaction
-      } = payload;
       return {
         ...state,
-        // ...transactionState,
         writeStatus: CONTRACT_STATUSES.WRITE_SUCCESS.name,
         writeStatusMsg: CONTRACT_STATUSES.WRITE_SUCCESS.message,
       } as ContractState;
@@ -131,36 +128,23 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
 
     case ACTIONS.WRITE_SETTLED: {
       if (!payload) throw new Error("Payload empty.");
-      const { writeStatus, hash, transaction } = payload;
-      // const transactionState = updatedTransactionState(state, transaction);
-      console.log("write settled state: ", {
-        ...state,
-        // ...transactionState,
-        hash,
-        writeStatus,
-      });
+      const { hash } = payload;
 
       return {
         ...state,
-        // ...transactionState,
         hash,
-        writeStatus: CONTRACT_STATUSES.WRITE_SETTLED.name,
-        writeStatusMsg: null,
+        writeStatus: CONTRACT_STATUSES.WRITE_SUCCESS.name,
+        writeStatusMsg: CONTRACT_STATUSES.WRITE_SUCCESS.message,
       } as ContractState;
     }
 
     case ACTIONS.WRITE_ERROR: {
       if (!payload) throw new Error("Payload empty.");
-      const {
-        error,
-        // transaction
-      } = payload;
+      const { error } = payload;
       if (!error) return;
       const errorMsg = getWriteErrorMessage(error);
-      // const transactionState = updatedTransactionState(state, transaction);
       return {
         ...state,
-        // ...transactionState,
         writeStatus: ERROR_STATUSES.WRITE_ERROR.name,
         writeStatusMsg: null,
         writeErrorMsg: errorMsg,

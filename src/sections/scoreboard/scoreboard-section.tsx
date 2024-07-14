@@ -2,17 +2,15 @@ import { ContractContext } from "@/contexts/contract-context";
 import { FITNESS_OPTIONS } from "@/data/cards";
 import { useVotingContract } from "@/hooks/useVotingContract";
 import { useContext, useEffect, useState } from "react";
-import { BaseError, useWaitForTransactionReceipt } from "wagmi";
+import { BaseError } from "wagmi";
 import ExerciseOption from "./exercise-option";
 import { CONTRACT_STATUSES } from "@/data/statuses";
-import { ACTIONS } from "@/actions/voting-actions";
 
 const ScoreboardSection = () => {
   console.log("scoreboard rendered");
   const { data, error, isPending, refetch } = useVotingContract();
   const {
     contractState: { transactionStatus },
-    dispatch,
   } = useContext(ContractContext);
   // const { status: transactionStatus } = useWaitForTransactionReceipt({
   //   hash,

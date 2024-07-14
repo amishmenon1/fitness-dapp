@@ -1,5 +1,5 @@
 import { ACTIONS } from "@/actions/voting-actions";
-import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
+import { CONTRACT_STATUSES } from "@/data/statuses";
 import { ActionType, ContractState } from "./write-status-reducer";
 
 export function writeStatusReducer(state: ContractState, action: ActionType) {
