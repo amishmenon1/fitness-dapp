@@ -21,17 +21,18 @@ const INITIAL_STATE: ContractState = {
   openStatusModal: false,
 };
 
-export const ContractContext = createContext<{
+type ContractContextType = {
   contractState: ContractState;
   dispatch: Dispatch<ActionType>;
-}>({
+};
+
+export const ContractContext = createContext<ContractContextType | undefined>({
   contractState: INITIAL_STATE,
   dispatch: () => null,
 });
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
   console.log("context rendered");
-  // @ts-ignore
   const [contractState, dispatch] = useReducer(
     writeStatusReducer,
     INITIAL_STATE

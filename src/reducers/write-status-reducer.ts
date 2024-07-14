@@ -89,7 +89,10 @@ const updatedTransactionState = (state: ContractState, transaction: any) => {
   }
 };
 
-export function writeStatusReducer(state: ContractState, action: ActionType) {
+export function writeStatusReducer(
+  state: ContractState,
+  action: ActionType
+): ContractState {
   const { type, payload } = action;
   switch (type) {
     case ACTIONS.SYSTEM_IDLE: {
@@ -141,7 +144,7 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
     case ACTIONS.WRITE_ERROR: {
       if (!payload) throw new Error("Payload empty.");
       const { error } = payload;
-      if (!error) return;
+      // if (!error) return;
       const errorMsg = getWriteErrorMessage(error);
       return {
         ...state,
