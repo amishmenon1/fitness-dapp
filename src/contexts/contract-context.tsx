@@ -50,7 +50,7 @@ export const ContractContext = createContext<{
 });
 
 const ContractProvider = ({ children }: ContractContextProviderProps) => {
-  // console.log("context rendered");
+  console.log("context rendered");
   const [contractState, dispatch] = useReducer(
     writeStatusReducer,
     INITIAL_STATE

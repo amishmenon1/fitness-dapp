@@ -13,7 +13,7 @@ import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
 import { ACTIONS } from "@/actions/voting-actions";
 
 const VotingSection = () => {
-  // console.log("voting rendered");
+  console.log("voting rendered");
   const { isConnected } = useAccount();
   const {
     contractState: { hash },

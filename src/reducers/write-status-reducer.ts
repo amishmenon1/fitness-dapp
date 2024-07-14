@@ -171,7 +171,7 @@ export function writeStatusReducer(state: ContractState, action: ActionType) {
       // break;
     }
 
-    case "RESET_STATUS": {
+    case ACTIONS.RESET_STATUS: {
       return {
         ...state,
         writeStatus: CONTRACT_STATUSES.WRITE_IDLE.name,

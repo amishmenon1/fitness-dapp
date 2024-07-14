@@ -96,7 +96,7 @@ const StatusModal = ({
   );
 };
 const StatusSection = () => {
-  // console.log("status section rendered");
+  console.log("status section rendered");
   const {
     contractState: {
       hash,

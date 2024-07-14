@@ -8,6 +8,7 @@ import { CONTRACT_STATUSES } from "@/data/statuses";
 import { ACTIONS } from "@/actions/voting-actions";
 
 const ScoreboardSection = () => {
+  console.log("scoreboard rendered");
   const { data, error, isPending, refetch } = useVotingContract();
   const {
     contractState: { transactionStatus },
