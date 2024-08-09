@@ -26,3 +26,6 @@ dist-ssr
 .env
 package-lock.json
 .vercel
+
+# Testing
+coverage
