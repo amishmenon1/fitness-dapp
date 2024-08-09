@@ -1,7 +1,11 @@
-import { render, screen } from "@testing-library/react";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import Web3ModalProvider from "./contexts/web3modal-provider.tsx";
+import {
+  render,
+  screen,
+  // userEvent
+} from "./test/test-utils.ts";
 
 /**
  Alternate solution - Instead of having a setup.ts file in src/test that imports @testing-library/jest-dom, 
@@ -11,18 +15,6 @@ import Web3ModalProvider from "./contexts/web3modal-provider.tsx";
  expect.extend(matchers);
  
  **/
-
-// it("Should have Hello World", () => {
-//   render(
-//     <Web3ModalProvider>
-//       <BrowserRouter>
-//         <App />
-//       </BrowserRouter>
-//     </Web3ModalProvider>
-//   );
-//   const message = screen.queryByText("Hello World");
-//   expect(message).toBeVisible();
-// });
 
 it("Should show Connect Wallet button", () => {
   render(
@@ -35,3 +27,17 @@ it("Should show Connect Wallet button", () => {
   const connectButton = screen.getByTestId("connect-wallet");
   expect(connectButton).toBeVisible();
 });
+
+// it("Should show Disconnect button after login", async () => {
+//   render(
+//     <Web3ModalProvider>
+//       <BrowserRouter>
+//         <App />
+//       </BrowserRouter>
+//     </Web3ModalProvider>
+//   );
+//   const connectButton = screen.getByTestId("connect-wallet");
+//   expect(connectButton).toBeVisible();
+//   userEvent.click(connectButton);
+//   expect(await screen.findByTestId("connect-wallet")).not.toBeVisible();
+// });
