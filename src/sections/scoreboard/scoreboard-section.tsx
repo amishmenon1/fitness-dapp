@@ -2,16 +2,16 @@ import { ContractContext } from "@/contexts/contract-context";
 import { FITNESS_OPTIONS } from "@/data/cards";
 import { useVotingContract } from "@/hooks/useVotingContract";
 import { useContext, useEffect, useState } from "react";
-import { BaseError, useWaitForTransactionReceipt } from "wagmi";
+import { BaseError } from "wagmi";
 import ExerciseOption from "./exercise-option";
 import { CONTRACT_STATUSES } from "@/data/statuses";
 
 const ScoreboardSection = () => {
+  console.log("scoreboard rendered");
   const { data, error, isPending, refetch } = useVotingContract();
-  const { hash } = useContext(ContractContext);
-  const { status: transactionStatus } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const {
+    contractState: { transactionStatus },
+  } = useContext(ContractContext);
 
   const [scoresUpdated, setScoresUpdated] = useState(false);
   const [cardioVotes, weightliftingVotes] = data || [];
@@ -29,7 +29,9 @@ const ScoreboardSection = () => {
     if (transactionStatus === CONTRACT_STATUSES.TRANSACTION_SUCCESS.name) {
       refetchVotes();
     }
-  }, [transactionStatus, refetch, setScoresUpdated]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionStatus]);
 
   function resetActiveState() {
     setScoresUpdated(false);

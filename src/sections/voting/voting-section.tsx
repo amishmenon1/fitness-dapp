@@ -1,23 +1,19 @@
 import Card from "@/components/card";
-import { useAccount } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { VOTING_ABI as abi } from "@/abi/VotingData";
 import { sepolia } from "viem/chains";
 import { useContext } from "react";
 import { FITNESS_OPTIONS, FitnessCard, cards } from "@/data/cards";
 import { ContractContext } from "@/contexts/contract-context";
-import { CONTRACT_STATUSES, ERROR_STATUSES } from "@/data/statuses";
+import { CONTRACT_STATUSES } from "@/data/statuses";
+import { ACTIONS } from "@/actions/voting-actions";
 
 const VotingSection = () => {
-  // console.log("voting rendered");
+  console.log("voting rendered");
   const { isConnected } = useAccount();
-  const { contractState, setContractState, writeContract } =
-    useContext(ContractContext);
-  const {
-    writeStatus, // 'idle' | 'pending' | 'error' | 'success'
-  } = contractState;
+  const { dispatch } = useContext(ContractContext);
 
-  const { WRITE_STARTED } = CONTRACT_STATUSES;
-  const { WRITE_ERROR } = ERROR_STATUSES;
+  const { writeContract, status: writeStatus } = useWriteContract();
 
   /**
    * Places a vote.
@@ -31,18 +27,17 @@ const VotingSection = () => {
       ? FITNESS_OPTIONS.weightlifting.value
       : FITNESS_OPTIONS.cardio.value;
 
-    setContractState((prevState) => {
-      return {
-        ...prevState,
-        writeStatus: WRITE_STARTED.message,
-        writeErrorMsg: "",
+    dispatch({
+      type: ACTIONS.WRITE_INITIATED,
+      payload: {
         lastVote,
-      };
+        // transaction
+      },
     });
 
     const functionName = votedWeightlifting
       ? FITNESS_OPTIONS.weightlifting.voteFn
-      : FITNESS_OPTIONS.cardio.voteFn; // "voteWeightlifting" : "voteCardio";
+      : FITNESS_OPTIONS.cardio.voteFn;
 
     try {
       writeContract(
@@ -55,28 +50,28 @@ const VotingSection = () => {
         },
         {
           onSuccess: async (_response: any) => {
-            setContractState((prevState) => {
-              return {
-                ...prevState,
+            dispatch({
+              type: ACTIONS.WRITE_COMPLETE,
+              payload: {
                 writeStatus,
-              };
+              },
             });
           },
-          onSettled: async (_response: any) => {
-            setContractState((prevState) => {
-              return {
-                ...prevState,
+          onSettled: async (response: any) => {
+            dispatch({
+              type: ACTIONS.WRITE_SETTLED,
+              payload: {
                 writeStatus,
-              };
+                hash: response,
+              },
             });
           },
           onError: (error: any) => {
-            setContractState((prevState) => {
-              return {
-                ...prevState,
-                writeStatus: WRITE_ERROR.name,
-                writeErrorMsg: error?.message,
-              };
+            dispatch({
+              type: ACTIONS.WRITE_ERROR,
+              payload: {
+                error,
+              },
             });
           },
         }
@@ -105,7 +100,6 @@ const VotingSection = () => {
                   ? "Voting..."
                   : "Vote!"
               }
-              // btnText={voteButtonText()}
               btnValue={card.value}
               disabled={
                 [
